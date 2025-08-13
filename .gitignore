@@ -1,26 +1,22 @@
-# This .gitignore file should be placed at the root of your Unity project directory
-#
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
-
 # Unity Generated
-.utmp/
-/[Ll]ibrary/
-/[Ll]ibrary/PackageCache/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
-/[Mm]emoryCaptures/
-/[Rr]ecordings/
+[Ll]ibrary/
+[Ll]ibrary/PackageCache/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+[Bb]ee/
+*.stacktrace
 
 # Asset Store Tools
-/[Aa]ssets/AssetStoreTools*
+[Aa]ssets/AssetStoreTools*
 
 # JetBrains Rider
-/[Aa]ssets/Plugins/Editor/JetBrains*
+[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Visual Studio & JetBrains
 .vs/
@@ -57,20 +53,26 @@ sysinfo.txt
 *.unitypackage
 *.unitypackage.meta
 *.app
+*.ipa
+*.exe
+*.xap
+*.msix
+*.msixbundle
+*.appxbundle
 
 # Crashlytics
 crashlytics-build.properties
 
 # Addressables
-/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 
 # StreamingAssets generated files
-/[Aa]ssets/[Ss]treamingAssets/aa.meta
-/[Aa]ssets/[Ss]treamingAssets/aa/*
+[Aa]ssets/[Ss]treamingAssets/aa.meta
+[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Additional for XR Projects
 # Meta XR / Oculus stuff - runtime generated or local settings
-/[Pp]lugins/Oculus/Platform/Editor/Generated/
+[Pp]lugins/Oculus/Platform/Editor/Generated/
 Assets/Resources/OVR/*
 Assets/Resources/MetaXR/*
 
