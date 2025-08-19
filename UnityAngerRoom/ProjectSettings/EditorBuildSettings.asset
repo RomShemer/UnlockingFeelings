@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/JoyScene 1.unity
     guid: 81b7ef4def50d57498bdc8522ee2de91
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 95aab88baa504984fa443880b9ce7660, type: 3}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: ded36863068ad75409b0ad2c3afc222a, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 86d6873259dbddb469bf8452a93fe799, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 2010d79020ffc7b4ba7730516e38bff2, type: 2}
