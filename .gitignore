@@ -98,3 +98,8 @@ Assets/XRI/Settings/
 [Aa]ssets/**/tempburstlibs/
 *.BurstDebugInformation_DoNotShip/
 .utmp/
+
+# Unity Burst temp
+*.BurstDebugInformation_DoNotShip/
+tempburstlibs/
+.utmp/
