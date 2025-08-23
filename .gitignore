@@ -93,3 +93,8 @@ Assets/XRI/Settings/
 
 # Unity Collaborate files (if not using Collaborate)
 .collabignore
+
+# Burst / UTMP / Debug temps
+[Aa]ssets/**/tempburstlibs/
+*.BurstDebugInformation_DoNotShip/
+.utmp/
