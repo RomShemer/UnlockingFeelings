@@ -60,10 +60,27 @@ public class JarButterflyShow : MonoBehaviour
     [Header("Events (Optional)")]
     public UnityEvent onReleasedOnce;
 
+    // ---------- חדש: שליטה באינטראקציה ----------
+    [Header("Interaction Lock")]
+    [Tooltip("נעל תפיסה עד סיום ההתיישרות בשורה")]
+    public bool lockGrabUntilLineup = true;
+    [Tooltip("לכבות את המכסה אחרי הפתיחה")]
+    public bool deactivateCapAfterOpen = true;
+
     void Reset()
     {
         if (lineupAnchor == null)
             lineupAnchor = jarBody != null ? jarBody : transform;
+    }
+
+    void Start()
+    {
+        // בתחילת הסצנה – נטרל תפיסה לכל הפרפרים (כשהם עדיין בתוך הצנצנת)
+        if (lockGrabUntilLineup && butterflies != null)
+        {
+            foreach (var b in butterflies)
+                SetButterflyGrabActive(b, false);
+        }
     }
 
     /// לחבר ל-UI Button (OnClick)
@@ -81,7 +98,7 @@ public class JarButterflyShow : MonoBehaviour
 
         // 1) פתיחת מכסה
         if (jarCap != null)
-            yield return StartCoroutine(AnimateCapOpen());
+            yield return StartCoroutine(AnimateCapOpen()); // יהפוך ל-inactive בסוף אם מסומן
 
         // 2) יציאה + התייצבות מעל הצנצנת
         if (butterflies != null && butterflies.Count > 0)
@@ -89,7 +106,8 @@ public class JarButterflyShow : MonoBehaviour
             Transform anchor = lineupAnchor != null ? lineupAnchor :
                                (jarBody != null ? jarBody : transform);
 
-            Vector3 center = anchor.TransformPoint(lineupLocalOffset);
+            Matrix4x4 m = Matrix4x4.TRS(anchor.position, anchor.rotation, Vector3.one);
+            Vector3 center = m.MultiplyPoint3x4(lineupLocalOffset);
             Vector3 right  = anchor.right;
             float totalWidth = (butterflies.Count - 1) * horizontalSpacing;
 
@@ -107,6 +125,7 @@ public class JarButterflyShow : MonoBehaviour
             }
         }
 
+        // חכה שכל מי שהתחיל – יסיים (מרווח ביטחון קטן)
         yield return new WaitForSeconds(exitTime + lineupTime + 0.2f);
 
         if (oneShot) onReleasedOnce?.Invoke();
@@ -117,13 +136,11 @@ public class JarButterflyShow : MonoBehaviour
     {
         if (forceFaceUp)
         {
-            // כולם "מסתכלים למעלה": Forward = WorldUp, Up = WorldForward (למנוע רול)
             Quaternion lookUp = Quaternion.LookRotation(Vector3.up, Vector3.forward);
             return Quaternion.Euler(0f, fixedYawDeg, 0f) * lookUp * Quaternion.Euler(modelRotationOffsetEuler);
         }
         else
         {
-            // fallback – עומדים ישר קדימה בעולם
             return Quaternion.Euler(0f, fixedYawDeg, 0f) * Quaternion.Euler(modelRotationOffsetEuler);
         }
     }
@@ -149,13 +166,16 @@ public class JarButterflyShow : MonoBehaviour
 
         jarCap.localRotation = targetRot;
         jarCap.localPosition = targetPos;
+
+        // NEW: לכבות את המכסה לאחר שהסתיים האנימציה
+        if (deactivateCapAfterOpen && jarCap.gameObject.activeSelf)
+            jarCap.gameObject.SetActive(false);
     }
 
     private IEnumerator ButterflyArcThenLine(Transform b, Vector3 preLineTarget, Quaternion targetLook)
     {
         Vector3 p0 = b.position;
 
-        // סטייה צדית נגזרת מ"כיוון אופקי" של יעד (Yaw), כדי שהקשת תראה טבעית
         Vector3 forwardFlat = Vector3.ProjectOnPlane(targetLook * Vector3.forward, Vector3.up).normalized;
         if (forwardFlat.sqrMagnitude < 1e-6f) forwardFlat = Vector3.forward;
         Vector3 side = Vector3.Cross(Vector3.up, forwardFlat).normalized;
@@ -191,11 +211,37 @@ public class JarButterflyShow : MonoBehaviour
         }
 
         b.rotation = r1; // ודא נעילה לרוטציית היעד
+
+        // NEW: בשלב הזה מותר לתפוס
+        if (lockGrabUntilLineup)
+            SetButterflyGrabActive(b, true);
     }
 
     private Vector3 Bezier(Vector3 p0, Vector3 p1, Vector3 p2, float t)
     {
         float u = 1f - t;
         return (u * u * p0) + (2f * u * t * p1) + (t * t * p2);
+    }
+
+    // --------- NEW: הפעלה/כיבוי של רכיבי תפיסה רלוונטיים ---------
+    private void SetButterflyGrabActive(Transform root, bool active)
+    {
+        if (root == null) return;
+
+        // כבה/הפעל כל קומפוננטה רלוונטית לתפיסה (Interaction SDK / Meta XR / Oculus / XR)
+        foreach (var beh in root.GetComponentsInChildren<Behaviour>(true))
+        {
+            if (beh == null) continue;
+            string n = beh.GetType().Name;
+
+            // דוגמאות נפוצות: Grabbable, RayInteractable, GrabInteractable, RayGrabInteractable, OVRGrabbable, XRGrabInteractable, וכו'
+            if (n.Contains("Grabbable") ||
+                n.Contains("GrabInteractable") ||
+                n.Contains("RayInteractable") ||
+                n.Contains("RayGrab"))
+            {
+                beh.enabled = active;
+            }
+        }
     }
 }
