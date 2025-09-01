@@ -14,8 +14,8 @@ TagManager:
   - Water
   - UI
   - MainCamera
-  - Bfly
-  - Bush
+  - puzzels
+  - floor
   - 
   - 
   - 
@@ -37,7 +37,7 @@ TagManager:
   - 
   - 
   - 
-  - XR Simulation
+  - 
   - 
   m_SortingLayers:
   - name: Default
