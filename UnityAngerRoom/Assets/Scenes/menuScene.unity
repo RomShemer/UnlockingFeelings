@@ -4738,7 +4738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &302724037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4751,8 +4751,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58517ec10c8fb4d1da9927367c43d2b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeGroup: {fileID: 302724038}
-  defaultDuration: 0.6
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  defaultFadeOut: 0.8
+  defaultHold: 0.15
+  defaultFadeIn: 0.8
+  useOverlayInsteadOfWorldSpace: 0
+  worldSpaceSize: {x: 6000, y: 4000}
+  worldSpaceDistanceMeters: 0.8
+  worldSpaceScale: 0.001
+  overlayReferenceResolution: {x: 1920, y: 1080}
+  sortingOrder: 5000
 --- !u!225 &302724038
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9323,6 +9331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d2672ea404248e4b9360a750378fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: joyScene 1
 --- !u!1 &596649323
 GameObject:
   m_ObjectHideFlags: 0
@@ -9883,6 +9892,60 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1904681405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &655975268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 655975270}
+  - component: {fileID: 655975269}
+  m_Layer: 0
+  m_Name: fader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &655975269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655975268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58517ec10c8fb4d1da9927367c43d2b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  defaultFadeOut: 0.8
+  defaultHold: 0.15
+  defaultFadeIn: 0.8
+  useOverlayInsteadOfWorldSpace: 0
+  worldSpaceSize: {x: 6000, y: 4000}
+  worldSpaceDistanceMeters: 0.8
+  worldSpaceScale: 0.001
+  overlayReferenceResolution: {x: 1920, y: 1080}
+  sortingOrder: 5000
+--- !u!4 &655975270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655975268}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 45.65, y: 5.4700003, z: 28.770002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &657331355
 GameObject:
@@ -18142,7 +18205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e933e81d3c20c74ea6fdc708a67e3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useRecommendedMSAALevel: 1
   _monoscopic: 0
   _sharpenType: 0
   _enableDynamicResolution: 1
@@ -25756,6 +25818,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ovrCameraRig: {fileID: 1181833613}
+  _leftHand: {fileID: 0}
+  _rightHand: {fileID: 0}
   _requireOvrHands: 1
 --- !u!114 &1649037599
 MonoBehaviour:
@@ -29894,7 +29958,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 596477132}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: StartNewGame
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35482,3 +35546,4 @@ SceneRoots:
   - {fileID: 291378114}
   - {fileID: 596477131}
   - {fileID: 302724042}
+  - {fileID: 655975270}
