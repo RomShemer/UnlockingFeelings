@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac20c1e105c2f44b85d4a0a01b72e0e, type: 3}
+  m_Name: PuzzleConnectionsConfig
+  m_EditorClassIdentifier: 
+  allowedConnections:
+  - pieceA: 16
+    pieceB: 12
+  - pieceA: 16
+    pieceB: 15
+  - pieceA: 15
+    pieceB: 14
+  - pieceA: 15
+    pieceB: 11
+  - pieceA: 14
+    pieceB: 10
+  - pieceA: 14
+    pieceB: 13
+  - pieceA: 13
+    pieceB: 9
+  - pieceA: 12
+    pieceB: 11
+  - pieceA: 12
+    pieceB: 8
+  - pieceA: 11
+    pieceB: 7
+  - pieceA: 11
+    pieceB: 10
+  - pieceA: 10
+    pieceB: 9
+  - pieceA: 10
+    pieceB: 6
+  - pieceA: 9
+    pieceB: 5
+  - pieceA: 8
+    pieceB: 7
+  - pieceA: 8
+    pieceB: 4
+  - pieceA: 7
+    pieceB: 3
+  - pieceA: 7
+    pieceB: 6
+  - pieceA: 6
+    pieceB: 2
+  - pieceA: 6
+    pieceB: 5
+  - pieceA: 5
+    pieceB: 1
+  - pieceA: 4
+    pieceB: 3
+  - pieceA: 3
+    pieceB: 2
+  - pieceA: 2
+    pieceB: 1

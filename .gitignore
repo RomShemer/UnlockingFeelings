@@ -60,6 +60,18 @@ sysinfo.txt
 *.msixbundle
 *.appxbundle
 
+*.dll
+Temp/
+Library/
+Build/
+obj/
+*.csproj
+*.user
+*.sln
+*.apk
+*.exe
+
+
 # Crashlytics
 crashlytics-build.properties
 
