@@ -1,0 +1,120 @@
+# Unity generated
+[Ll]ibrary/
+[Ll]ibrary/PackageCache/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Bb]ee/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+*.stacktrace
+
+# macOS
+.DS_Store
+
+# Asset Store Tools
+[Aa]ssets/AssetStoreTools*
+
+# JetBrains Rider plugin (לא נחוץ לריפו)
+[Aa]ssets/Plugins/Editor/JetBrains*
+
+# Visual Studio / Rider artifacts
+.vs/
+.idea/
+.gradle/
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Crash report
+sysinfo.txt
+
+# Build outputs
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+*.ipa
+*.exe
+*.xap
+*.msix
+*.msixbundle
+*.appxbundle
+
+*.dll
+Temp/
+Library/
+Build/
+obj/
+*.csproj
+*.user
+*.sln
+*.apk
+*.exe
+
+
+# Crashlytics
+crashlytics-build.properties
+
+# Addressables
+# Addressables (קבצי ריצה שנוצרים)
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata//.bin*
+[Aa]ssets/[Ss]treamingAssets/aa.meta
+[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Unity Burst temp/debug (מאוד מנפח)
+BurstDebugInformation_DoNotShip/
+**/tempburstlibs/
+
+# Input System generated
+*.inputactions
+
+# Local env
+*.local
+*.swp
+
+# Unity Collaborate
+.collabignore
+.DS_Store
+
+[Aa]ssets//*.zip
+[Ll]ibrary/
+[Bb]ee/
+[Tt]emp/
+[Ll]ogs/
+[Bb]uild/
+[Bb]uilds/
+BurstDebugInformation_DoNotShip/
+**/tempburstlibs/
+.DS_Store
+**/.utmp/
+[Ll]ibrary/
+[Bb]ee/
+[Tt]emp/
+[Ll]ogs/
+[Bb]uild/
+[Bb]uilds/
+BurstDebugInformation_DoNotShip/
+**/tempburstlibs/
+**/.utmp/
+.DS_Store
+*.apk
+*.app
+[Aa]ssets//*.zip
