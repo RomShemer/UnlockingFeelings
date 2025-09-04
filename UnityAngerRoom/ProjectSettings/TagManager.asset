@@ -5,9 +5,6 @@ TagManager:
   serializedVersion: 3
   tags:
   - Shoot
-  - Key
-  - DecorationOnly
-  - SadnessBook
   - Book
   layers:
   - Default
@@ -16,11 +13,14 @@ TagManager:
   - Book
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - MainCamera
+  - puzzels
+  - floor
+  - door
+  - bridge
+  - buildings
+  - bfly
+  - ground
   - 
   - 
   - 
