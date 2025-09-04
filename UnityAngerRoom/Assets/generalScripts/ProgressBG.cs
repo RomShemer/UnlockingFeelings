@@ -15,26 +15,34 @@ public class ProgressBarUI : MonoBehaviour
     [SerializeField] VisualEffect sparklePrefab;         // Prefab של הניצוצות
     [SerializeField] Vector3 sparkleOffset = new Vector3(0, 0.2f, 0);
     [SerializeField] float sparkleLifetime = 2f;
-    [SerializeField] string playEventName = "OnPlay";    // השם של האירוע ב-VFX Graph (לא חובה)
+    [SerializeField] string playEventName = "OnPlay";    // אופציונלי
 
     [Header("Sounds")]
-    [Tooltip("AudioSource להשמעת טיק קצר בכל התקדמות")]
-    [SerializeField] AudioSource sfxSource;
+    [SerializeField] AudioSource sfxSource;              // טיק
     [SerializeField] AudioClip tickClip;
     [Range(0f, 1f)] [SerializeField] float tickVolume = 0.9f;
-    [SerializeField] Vector2 tickPitchRange = new Vector2(0.95f, 1.05f);  // וריאציה עדינה
+    [SerializeField] Vector2 tickPitchRange = new Vector2(0.95f, 1.05f);
 
-    [Tooltip("AudioSource למוזיקת סיום כשהבר מתמלא")]
-    [SerializeField] AudioSource musicSource;
+    [SerializeField] AudioSource musicSource;            // מוזיקת סיום
     [SerializeField] AudioClip completeClip;
     [Range(0f, 1f)] [SerializeField] float completeVolume = 1f;
     [SerializeField] bool stopSfxOnComplete = true;
 
     [Header("Fade Out On Complete")]
-    [SerializeField] CanvasGroup canvasGroup;   // אם ריק, יימצא אוטומטית בהפעלה
+    [SerializeField] CanvasGroup canvasGroup;   // אם ריק, יימצא אוטומטית
     [SerializeField] float fadeOutDuration = 1.2f;
-    [SerializeField] float fadeOutDelay = 0.25f; // שנייה קטנה לפני שמתחילים פאייד
+    [SerializeField] float fadeOutDelay = 0.25f;
     [SerializeField] bool disableGameObjectAfterFade = true;
+
+    [Header("Timer Control On Complete")]
+    [Tooltip("אם true – כשהבר מתמלא נעצור את הטיימר ונעלים את קנבס השעון")]
+    [SerializeField] bool stopTimerAndHideClock = true;
+
+    [Tooltip("רפרנס ל-CountdownTimer (אם ריק – נאתר אוטומטית בסצינה)")]
+    [SerializeField] CountdownTimer countdown;
+
+    [Tooltip("האובייקט של קנבס השעון להעלמה (אם ריק – ננסה לקחת מ-countdown.timerUI)")]
+    [SerializeField] GameObject timerCanvasToHide;
 
     int total = 1;
     int current = 0;
@@ -51,22 +59,18 @@ public class ProgressBarUI : MonoBehaviour
         total = Mathf.Max(1, totalTargets);
         current = 0;
         completed = false;
-        Debug.Log($"[ProgressBarUI:{name}] Init → total={total}, current={current}");
         UpdateUI();
     }
 
-    /// <summary>
     /// מדווח התקדמות של יחידה אחת (אפשר להעביר Emitter כדי שהניצוצות יצאו ממנו)
-    /// </summary>
     public void ReportOne(Transform emitter = null)
     {
         if (completed) return;
 
         current = Mathf.Clamp(current + 1, 0, total);
-        Debug.Log($"[ProgressBarUI:{name}] ReportOne → current={current}/{total}");
         UpdateUI();
 
-        // ===== אפקט ניצוצות =====
+        // ניצוצות
         if (sparklePrefab != null)
         {
             Vector3 pos = emitter ? emitter.position + sparkleOffset
@@ -77,10 +81,10 @@ public class ProgressBarUI : MonoBehaviour
             Destroy(vfx.gameObject, sparkleLifetime);
         }
 
-        // ===== צליל טיק על כל התקדמות =====
+        // טיק
         PlayTick();
 
-        // ===== סיום =====
+        // סיום
         if (current >= total && !completed)
         {
             OnComplete();
@@ -102,7 +106,6 @@ public class ProgressBarUI : MonoBehaviour
     void OnComplete()
     {
         completed = true;
-        Debug.Log($"[ProgressBarUI:{name}] COMPLETE!");
 
         if (stopSfxOnComplete && sfxSource) sfxSource.Stop();
 
@@ -112,6 +115,23 @@ public class ProgressBarUI : MonoBehaviour
             musicSource.loop = false;
             musicSource.volume = completeVolume;
             musicSource.Play();
+        }
+
+        // --- חדש: עצירת טיימר והעלמת קנבס השעון ---
+        if (stopTimerAndHideClock)
+        {
+            // מצא טיימר אם לא חיברנו ידנית
+            if (!countdown) countdown = FindObjectOfType<CountdownTimer>();
+
+            if (countdown)
+            {
+                countdown.PauseTimer(); // מפסיק את הספירה לאחור
+
+                // אם לא חיברנו קנבס לשעון – ננסה לקחת מהטיימר עצמו (timerUI)
+                if (!timerCanvasToHide) timerCanvasToHide = countdown.timerUI;
+
+                if (timerCanvasToHide) timerCanvasToHide.SetActive(false);
+            }
         }
 
         if (fadeOutDuration > 0f && canvasGroup)
@@ -136,25 +156,14 @@ public class ProgressBarUI : MonoBehaviour
         canvasGroup.alpha = 0f;
 
         if (disableGameObjectAfterFade)
-        {
-            // אם ה-CanvasGroup יושב על אבא, עדיף לכבות את האבא שלו
             gameObject.SetActive(false);
-        }
     }
 
     void UpdateUI()
     {
         float ratio = (float)current / total;
 
-        if (fill)
-        {
-            fill.fillAmount = ratio;
-            Debug.Log($"[ProgressBarUI:{name}] UpdateUI → fillAmount={fill.fillAmount}");
-        }
-        if (label)
-        {
-            label.text = $"{current}/{total}";
-            Debug.Log($"[ProgressBarUI:{name}] UpdateUI → label={label.text}");
-        }
+        if (fill)  fill.fillAmount = ratio;
+        if (label) label.text = $"{current}/{total}";
     }
 }

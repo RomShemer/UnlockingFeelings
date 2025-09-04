@@ -263,13 +263,13 @@ public class CountdownTimer : MonoBehaviour
 
         if (ScreenFader.Instance != null)
         {
-            ScreenFader.Instance.FadeToScene(sceneToLoadOnEnd);
+            ScreenFader.Instance.FadeToScene("loseRoom");
         }
         else
         {
             Time.timeScale = 1f;
             AudioListener.pause = false;
-            SceneManager.LoadScene(sceneToLoadOnEnd);
+            SceneManager.LoadScene("loseRoom");
         }
     }
 
