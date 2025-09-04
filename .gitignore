@@ -58,6 +58,22 @@ sysinfo.txt
 *.msixbundle
 *.appxbundle
 
+*.dll
+Temp/
+Library/
+Build/
+obj/
+*.csproj
+*.user
+*.sln
+*.apk
+*.exe
+
+
+# Crashlytics
+crashlytics-build.properties
+
+# Addressables
 # Addressables (קבצי ריצה שנוצרים)
 [Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 [Aa]ssets/[Ss]treamingAssets/aa.meta
