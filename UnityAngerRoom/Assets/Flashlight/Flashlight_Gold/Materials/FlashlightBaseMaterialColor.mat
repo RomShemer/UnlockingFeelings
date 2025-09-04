@@ -22,10 +22,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  <<<<<<< HEAD
-    m_LockedProperties: 
-  =======
-  >>>>>>> 1d2002b6d0512f784629ee47f3c0e0c105acf5db
+    m_LockedProperties: []
     m_SavedProperties:
       serializedVersion: 3
       m_TexEnvs:
