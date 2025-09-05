@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.VFX;
 using System.Collections;
 
-public class ProgressBarUI : MonoBehaviour
+public class ProgressBG : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] Image fill;

@@ -10,7 +10,7 @@ public class PuzzleGameManager : MonoBehaviour
     public PuzzleConnectionsConfig connectionsConfig;
 
     [Header("UI")]
-    public ProgressBarUI progressBarUI;
+    public ProgressBG progressBarUI;
 
     [SerializeField] private DoorScript.Door door;
 

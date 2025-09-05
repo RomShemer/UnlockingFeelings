@@ -4,13 +4,13 @@ using UnityEngine.SceneManagement;
 public class CollectPuzzleManager : MonoBehaviour
 {
     [Header("UI")]
-    public ProgressBarUI progressBarUI;
+    public ProgressBG progressBarUI;
     private int totalPieces = 16;
     private int countPieces = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        progressBarUI.Init(16); // 16 çì÷éí
+        progressBarUI.Init(16); // 16 ï¿½ï¿½ï¿½ï¿½ï¿½
 
     }
 
@@ -29,7 +29,7 @@ public class CollectPuzzleManager : MonoBehaviour
     //private void OnPuzzleComplete()
     //{
     //    Debug.Log("finish puzzel- open door");
-    //    //door?.OpenDoor();  // ÷øéàä ìôúéçä
+    //    //door?.OpenDoor();  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //}
     
     public bool isCollectAllPuzzles()

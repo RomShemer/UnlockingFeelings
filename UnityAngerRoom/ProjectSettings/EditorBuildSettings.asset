@@ -14,13 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JoyScene 1.unity
     guid: 81b7ef4def50d57498bdc8522ee2de91
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FearScene.unity
     guid: 2943d72a28570354eafaf4c5679bf293
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/subFearScenes/darkRoomFearScenes.unity
     guid: 533df42dad3b381428cad209a014163b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FearScene.unity
     guid: 2943d72a28570354eafaf4c5679bf293
   - enabled: 1
