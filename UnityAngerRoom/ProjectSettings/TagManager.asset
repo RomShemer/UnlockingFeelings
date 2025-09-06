@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shoot
   - Book
+  - SadnessBook
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -21,12 +23,9 @@ TagManager:
   - buildings
   - bfly
   - ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - camerasee
+  - tample
+  - piano
   - 
   - 
   - 
