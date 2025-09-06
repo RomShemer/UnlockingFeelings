@@ -75,12 +75,12 @@ crashlytics-build.properties
 
 # Addressables
 # Addressables (קבצי ריצה שנוצרים)
-[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata//.bin*
 [Aa]ssets/[Ss]treamingAssets/aa.meta
 [Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Unity Burst temp/debug (מאוד מנפח)
-*BurstDebugInformation_DoNotShip*/
+BurstDebugInformation_DoNotShip/
 **/tempburstlibs/
 
 # Input System generated
@@ -94,14 +94,14 @@ crashlytics-build.properties
 .collabignore
 .DS_Store
 
-[Aa]ssets/**/*.zip
+[Aa]ssets//*.zip
 [Ll]ibrary/
 [Bb]ee/
 [Tt]emp/
 [Ll]ogs/
 [Bb]uild/
 [Bb]uilds/
-*BurstDebugInformation_DoNotShip*/
+BurstDebugInformation_DoNotShip/
 **/tempburstlibs/
 .DS_Store
 **/.utmp/
@@ -111,10 +111,10 @@ crashlytics-build.properties
 [Ll]ogs/
 [Bb]uild/
 [Bb]uilds/
-*BurstDebugInformation_DoNotShip*/
+BurstDebugInformation_DoNotShip/
 **/tempburstlibs/
 **/.utmp/
 .DS_Store
 *.apk
 *.app
-[Aa]ssets/**/*.zip
+[Aa]ssets//*.zip

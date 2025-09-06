@@ -365,6 +365,6 @@ public class PuzzleGameManager : MonoBehaviour
     private void OnPuzzleComplete()
     {
         Debug.Log("finish puzzel- open door");
-        door?.OpenDoor();  // קריאה לפתיחה
-    }
+        door?.OpenDoor();  // קריאה לפתיחה
+    }
 }

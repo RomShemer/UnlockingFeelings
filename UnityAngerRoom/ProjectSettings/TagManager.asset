@@ -7,6 +7,8 @@ TagManager:
   - Shoot
   - Book
   - FullPuzzle
+  - SadnessBook
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -25,6 +27,9 @@ TagManager:
   - flashlight
   - handsControllers
   - room
+  - camerasee
+  - tample
+  - piano
   - 
   - 
   - 

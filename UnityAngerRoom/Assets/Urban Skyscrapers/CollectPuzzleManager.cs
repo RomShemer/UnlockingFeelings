@@ -10,7 +10,7 @@ public class CollectPuzzleManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        progressBarUI.Init(16); // 16 ημχιν
+        progressBarUI.Init(16); // 16 Χ—ΧΧ§Χ™Χ
 
     }
 
@@ -29,7 +29,7 @@ public class CollectPuzzleManager : MonoBehaviour
     //private void OnPuzzleComplete()
     //{
     //    Debug.Log("finish puzzel- open door");
-    //    //door?.OpenDoor();  // χψιΰδ μτϊιηδ
+    //    //door?.OpenDoor();  // Χ§Χ¨Χ™ΧΧ” ΧΧ¤ΧªΧ™Χ—Χ”
     //}
     
     public bool isCollectAllPuzzles()
