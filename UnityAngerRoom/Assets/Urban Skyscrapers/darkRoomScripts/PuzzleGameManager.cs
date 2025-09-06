@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Meta.WitAi;
-
+using fearRoom;
 public class PuzzleGameManager : MonoBehaviour
 {
     public static PuzzleGameManager Instance { get; private set; }
@@ -10,7 +10,12 @@ public class PuzzleGameManager : MonoBehaviour
     public PuzzleConnectionsConfig connectionsConfig;
 
     [Header("UI")]
-    public ProgressBarUI progressBarUI;
+    public fearRoom.ProgressBarUI progressBarUI;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip connectSound;
+    [SerializeField] private AudioClip wrongConnectSound;
+    [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private DoorScript.Door door;
 
@@ -135,6 +140,10 @@ public class PuzzleGameManager : MonoBehaviour
         if (!connectionsConfig.CanConnect(pieceA.PieceID, pieceB.PieceID))
         {
             Debug.Log("Step 4: CanConnect returned FALSE");
+            if (audioSource != null && wrongConnectSound != null)
+            {
+                audioSource.PlayOneShot(wrongConnectSound);
+            }
             return;
         }
 
@@ -159,12 +168,12 @@ public class PuzzleGameManager : MonoBehaviour
             ReportConnection();
 
             //temp-check:
-            if ((pieceA.PieceID == 15 && pieceB.PieceID == 16) || (pieceA.PieceID == 16 && pieceB.PieceID == 15))
-            {
-                Debug.Log("temp check- connect pieces 15-16 and starting opening door");
-                door?.OpenDoor();  // קריאה לפתיחה
-                Debug.Log("temp check-after open door");
-            }
+            //if ((pieceA.PieceID == 15 && pieceB.PieceID == 16) || (pieceA.PieceID == 16 && pieceB.PieceID == 15))
+            //{
+            //    Debug.Log("temp check- connect pieces 15-16 and starting opening door");
+            //    door?.OpenDoor();  // קריאה לפתיחה
+            //    Debug.Log("temp check-after open door");
+            //}
             ////////////////////////////////////////////////////////////////////////////////////////////
 
             Debug.Log("return from report one to progressBar");
@@ -255,6 +264,11 @@ public class PuzzleGameManager : MonoBehaviour
 
     private void ReportConnection()
     {
+        if (audioSource != null && connectSound != null)
+        {
+            audioSource.PlayOneShot(connectSound);
+        }
+
         connectedPieces++;
         progressBarUI?.ReportOne();
 
@@ -268,6 +282,6 @@ public class PuzzleGameManager : MonoBehaviour
     private void OnPuzzleComplete()
     {
         Debug.Log("finish puzzel- open door");
-        door?.OpenDoor();  // קריאה לפתיחה
-    }
+        door?.OpenDoor();  // קריאה לפתיחה
+    }
 }

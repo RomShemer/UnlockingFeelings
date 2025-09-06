@@ -7,7 +7,7 @@ public class MatchProgressManager : MonoBehaviour
 
     [Header("UI")]
     public Image fillImage;                  // ה-Image של ה-fill (לא חובה אם משתמשים רק ב-ProgressBarUI)
-    public ProgressBarUI progressBarUI;      // ← הוסף שדה והגרור את הקומפוננטה של הבאנר
+    public ProgressBG progressBarUI;      // ← הוסף שדה והגרור את הקומפוננטה של הבאנר
 
     [Header("Logic")]
     public int totalGoals = 0;
