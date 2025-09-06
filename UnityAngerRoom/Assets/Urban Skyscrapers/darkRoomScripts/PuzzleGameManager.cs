@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Meta.WitAi;
-
+using fearRoom;
 public class PuzzleGameManager : MonoBehaviour
 {
     public static PuzzleGameManager Instance { get; private set; }
@@ -10,9 +10,20 @@ public class PuzzleGameManager : MonoBehaviour
     public PuzzleConnectionsConfig connectionsConfig;
 
     [Header("UI")]
-    public ProgressBarUI progressBarUI;
+    public fearRoom.ProgressBarUI progressBarUI;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip connectSound;
+    [SerializeField] private AudioClip wrongConnectSound;
+    [SerializeField] private AudioClip wrongPairSound;
+    [SerializeField] private AudioClip correctPairSound;
+
+
+    [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private DoorScript.Door door;
+
+    private List<(int, int)> actualConnections = new List<(int, int)>();
 
     private readonly List<PuzzleGroupHandler> allGroups = new List<PuzzleGroupHandler>();
     private int totalPieces = 16; 
@@ -135,6 +146,10 @@ public class PuzzleGameManager : MonoBehaviour
         if (!connectionsConfig.CanConnect(pieceA.PieceID, pieceB.PieceID))
         {
             Debug.Log("Step 4: CanConnect returned FALSE");
+            if (audioSource != null && wrongConnectSound != null)
+            {
+                audioSource.PlayOneShot(wrongConnectSound);
+            }
             return;
         }
 
@@ -156,15 +171,15 @@ public class PuzzleGameManager : MonoBehaviour
             Debug.Log("puzzleGameManager: return from create new group " + pieceA.PieceID + " " + pieceB.PieceID);
 
             Debug.Log("report one to progressBar");
-            ReportConnection();
+            ReportConnection(pieceA.PieceID, pieceB.PieceID);
 
             //temp-check:
-            if ((pieceA.PieceID == 15 && pieceB.PieceID == 16) || (pieceA.PieceID == 16 && pieceB.PieceID == 15))
-            {
-                Debug.Log("temp check- connect pieces 15-16 and starting opening door");
-                door?.OpenDoor();  // קריאה לפתיחה
-                Debug.Log("temp check-after open door");
-            }
+            //if ((pieceA.PieceID == 15 && pieceB.PieceID == 16) || (pieceA.PieceID == 16 && pieceB.PieceID == 15))
+            //{
+            //    Debug.Log("temp check- connect pieces 15-16 and starting opening door");
+            //    door?.OpenDoor();  // קריאה לפתיחה
+            //    Debug.Log("temp check-after open door");
+            //}
             ////////////////////////////////////////////////////////////////////////////////////////////
 
             Debug.Log("return from report one to progressBar");
@@ -176,7 +191,16 @@ public class PuzzleGameManager : MonoBehaviour
         {
             Debug.Log("puzzleGameManager: addPiece to group-" + pieceA.PieceID + " " + pieceB.PieceID);
             pieceA.CurrentGroup.AddPiece(pieceB);
-            ReportConnection();
+
+            var piecesA = pieceA.CurrentGroup.GetPieces();
+            foreach (var a in piecesA)
+            {
+                if (connectionsConfig.CanConnect(a.PieceID, pieceB.PieceID))
+                {
+                    ReportConnection(a.PieceID, pieceB.PieceID);
+                }
+            }
+
             Debug.Log("puzzleGameManager: return from addPiece to group-" + pieceA.PieceID + " " + pieceB.PieceID);
             return;
         }
@@ -185,7 +209,16 @@ public class PuzzleGameManager : MonoBehaviour
         {
             Debug.Log("puzzleGameManager: addPiece to group-" + pieceA.PieceID + " " + pieceB.PieceID);
             pieceB.CurrentGroup.AddPiece(pieceA);
-            ReportConnection();
+
+            var piecesB = pieceB.CurrentGroup.GetPieces();
+            foreach (var b in piecesB)
+            {
+                if (connectionsConfig.CanConnect(pieceA.PieceID, b.PieceID))
+                {
+                    ReportConnection(pieceA.PieceID, b.PieceID);
+                }
+            }
+
             Debug.Log("puzzleGameManager: return from addPiece to group-" + pieceA.PieceID + " " + pieceB.PieceID);
             return;
         }
@@ -200,21 +233,25 @@ public class PuzzleGameManager : MonoBehaviour
         Rigidbody rbA = pieceA.GetComponent<Rigidbody>();
         Rigidbody rbB = pieceB.GetComponent<Rigidbody>();
 
-        rbA.isKinematic = true;
-        rbB.isKinematic = true;
+        //rbA.isKinematic = true;
+        //rbB.isKinematic = true;
 
-        rbA.linearVelocity = Vector3.zero;
-        rbB.linearVelocity = Vector3.zero;
+        //rbA.linearVelocity = Vector3.zero;
+        //rbB.linearVelocity = Vector3.zero;
 
-        rbA.angularVelocity = Vector3.zero;
-        rbB.angularVelocity = Vector3.zero;
+        //if (rbA != null && rbB != null && !rbA.isKinematic && !rbB.isKinematic)
+        //{
+        //    rbA.angularVelocity = Vector3.zero;
+        //    rbB.angularVelocity = Vector3.zero;
+        //}
 
-        pieceA.isConnected = true;
-        pieceB.isConnected = true;
+        //pieceA.isConnected = true;
+        //pieceB.isConnected = true;
 
         // אופציונלי: התעלמות מקוליידר לאחר חיבור
         Collider colA = pieceA.GetComponent<Collider>();
         Collider colB = pieceB.GetComponent<Collider>();
+
         if (colA != null && colB != null)
         {
             Physics.IgnoreCollision(colA, colB, true);
@@ -230,6 +267,8 @@ public class PuzzleGameManager : MonoBehaviour
 
         GameObject groupGO = new GameObject("PuzzleGroup");
         PuzzleGroupHandler newGroup = groupGO.AddComponent<PuzzleGroupHandler>();
+        //newGroup.AddGroupTriggerCollider();
+        //newGroup.AddKinematicRigidbody();
         allGroups.Add(newGroup);
 
         newGroup.AddPiece(a);
@@ -237,11 +276,15 @@ public class PuzzleGameManager : MonoBehaviour
         //ReportConnection();
     }
 
+
     // =============================
     // מיזוג קבוצות קיימות
     // =============================
     private void MergeGroups(PuzzleGroupHandler groupA, PuzzleGroupHandler groupB)
     {
+        var piecesA = groupA.GetPieces();
+        var piecesB = groupB.GetPieces();
+
         Debug.Log("puzzleGameManager: enter merge groups");
 
         if (groupA == groupB) return;
@@ -249,20 +292,74 @@ public class PuzzleGameManager : MonoBehaviour
         foreach (var piece in groupB.GetPieces())
             groupA.AddPiece(piece);
 
+        foreach (var a in piecesA)
+        {
+            foreach (var b in piecesB)
+            {
+                if (connectionsConfig.CanConnect(a.PieceID, b.PieceID))
+                {
+                    ReportConnection(a.PieceID, b.PieceID);
+                }
+            }
+        }
+
         allGroups.Remove(groupB);
         Destroy(groupB.gameObject);
     }
 
-    private void ReportConnection()
+    private void ReportConnection(int idA, int idB)
     {
-        connectedPieces++;
-        progressBarUI?.ReportOne();
-
-        if (connectedPieces >= totalPieces)
+        if (audioSource != null && connectSound != null)
         {
-            Debug.Log("all puzzles connected");
-            OnPuzzleComplete();
+            audioSource.PlayOneShot(connectSound);
         }
+
+        if ((idA == 15 && idB == 16) || (idA == 16 && idB == 15))
+        {
+            if (audioSource != null && wrongConnectSound != null)
+            {
+                audioSource.PlayOneShot(correctPairSound);
+                OnPuzzleComplete();
+            }
+        } else
+        {
+            if (audioSource != null && wrongConnectSound != null)
+            {
+                audioSource.PlayOneShot(wrongPairSound);
+            }
+        }
+
+        //if (AddActualConnection(idA, idB))
+        //{
+        //    Debug.Log("ReportConnection: new connection " + idA + " - " + idB);
+        //    progressBarUI?.ReportOne();
+        //}
+        //else
+        //    Debug.Log("ReportConnection: connection already exists " + idA + " - " + idB);
+
+        //Debug.Log("connectedPieces: " + actualConnections.Count); ;
+
+        //if (connectionsConfig.isAllConnected(actualConnections.Count))
+        //{
+        //    Debug.Log("all puzzles connected");
+
+        //}
+    }
+
+    private bool AddActualConnection(int idA, int idB)
+    {
+        // דואגים שתהיה סימטריה (A,B) = (B,A)
+        var connection = (Mathf.Min(idA, idB), Mathf.Max(idA, idB));
+
+        if (!actualConnections.Contains(connection))
+        {
+            actualConnections.Add(connection);
+            connectedPieces++;
+            Debug.Log("New connection added: " + connection);
+            return true;
+        }
+
+        return false; // כבר קיים
     }
 
     private void OnPuzzleComplete()

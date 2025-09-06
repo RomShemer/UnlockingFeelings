@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Shoot
   - Book
+  - FullPuzzle
   layers:
   - Default
   - TransparentFX
@@ -21,12 +22,9 @@ TagManager:
   - buildings
   - bfly
   - ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - flashlight
+  - handsControllers
+  - room
   - 
   - 
   - 

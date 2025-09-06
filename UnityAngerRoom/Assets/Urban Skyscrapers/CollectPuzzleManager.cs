@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using fearRoom;
 public class CollectPuzzleManager : MonoBehaviour
 {
     [Header("UI")]
-    public ProgressBarUI progressBarUI;
+    public fearRoom.ProgressBarUI progressBarUI;
     private int totalPieces = 16;
     private int countPieces = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
