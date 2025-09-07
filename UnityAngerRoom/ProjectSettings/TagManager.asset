@@ -8,6 +8,10 @@ TagManager:
   - Book
   - SadnessBook
   - Key
+  - FullPuzzle
+  - SadnessBook
+  - Key
+  - Hammer
   layers:
   - Default
   - TransparentFX
@@ -29,6 +33,12 @@ TagManager:
   - key
   - podium
   - 
+  - flashlight
+  - handsControllers
+  - room
+  - camerasee
+  - tample
+  - piano
   - 
   - 
   - 

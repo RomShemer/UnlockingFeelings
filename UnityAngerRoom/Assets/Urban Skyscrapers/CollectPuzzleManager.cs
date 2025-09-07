@@ -1,16 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using fearRoom;
 public class CollectPuzzleManager : MonoBehaviour
 {
     [Header("UI")]
-    public ProgressBG progressBarUI;
+    public fearRoom.ProgressBarUI progressBarUI;
     private int totalPieces = 16;
     private int countPieces = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        progressBarUI.Init(16); // 16 �����
+        progressBarUI.Init(16); // 16 חלקים
 
     }
 
@@ -29,7 +29,7 @@ public class CollectPuzzleManager : MonoBehaviour
     //private void OnPuzzleComplete()
     //{
     //    Debug.Log("finish puzzel- open door");
-    //    //door?.OpenDoor();  // ����� ������
+    //    //door?.OpenDoor();  // קריאה לפתיחה
     //}
     
     public bool isCollectAllPuzzles()

@@ -9,7 +9,9 @@ public class PuzzlePieceHandler : MonoBehaviour
     private Rigidbody rb;
     private XRGrabInteractable grab;
     public bool isConnected = false;
+    public float downwardForce = 3f; // אפשר לשחק עם זה
 
+    private bool isHeld = false;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,16 +25,28 @@ public class PuzzlePieceHandler : MonoBehaviour
         grab.selectExited.AddListener(OnRelease);
     }
 
+    private void FixedUpdate()
+    {
+        if (isHeld)
+        {
+            rb.AddForce(Vector3.down * downwardForce, ForceMode.Acceleration);
+        }
+    }
+
     public void OnGrab(SelectEnterEventArgs args)
     {
         // כשאני תופסת ביד → מפסיקים קינטיות
-        //rb.isKinematic = false;
+        //rb.isKinematic = true; // כדי שלא ידחוף את היד
+        //rb.useGravity = false;
+        isHeld = true;
     }
 
     public void OnRelease(SelectExitEventArgs args)
     {
         // כשאני משחררת → חוזר להיות קינטי
-        //rb.isKinematic = true;
+        //rb.isKinematic = false; // כדי לאפשר טריגר
+        //rb.useGravity = true;
+        isHeld = true;
     }
     public PuzzleGroupHandler CurrentGroup { get; private set; }
 
