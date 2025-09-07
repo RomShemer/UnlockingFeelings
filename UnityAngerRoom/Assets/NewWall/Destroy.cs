@@ -10,7 +10,7 @@ public class Destroy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Shoot")
+        if(collision.gameObject.tag == "Hammer")
         {
             hp--;
         }
@@ -25,6 +25,7 @@ public class Destroy : MonoBehaviour
 
             if (graffitiPlane != null)
             {
+                GetComponent<Collider>().enabled = false;
                 Destroy(graffitiPlane);
                 //StartCoroutine(FadeOutGraffiti());
             }
