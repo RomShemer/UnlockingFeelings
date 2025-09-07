@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;           
-using UnityEngine.UI;          
+using UnityEngine.XR;
 using UnityEngine.SceneManagement;
 
 public class VRPauseManager : MonoBehaviour
@@ -21,6 +20,10 @@ public class VRPauseManager : MonoBehaviour
     [Tooltip("שם סצינת התפריט אליה נחזור בכפתור Quit")]
     public string menuSceneName = "menuScene";
 
+    [Header("Integration")]
+    [Tooltip("רפרנס ל-InstructionsOverlay כדי לחסום Y בזמן Pause ולסגור הוראות כש-Pause נפתח")]
+    public InstructionsOverlay instructionsOverlay;   // גרור מהאינספקטור (או יימצא אוטומטית)
+
     bool isPaused = false;
     float lastToggleTime = -999f;
 
@@ -30,20 +33,20 @@ public class VRPauseManager : MonoBehaviour
     void Awake()
     {
         if (pauseMenuRoot != null) pauseMenuRoot.SetActive(false);
+        if (!instructionsOverlay)
+            instructionsOverlay = FindObjectOfType<InstructionsOverlay>(true); // מוצא גם אם Disabled
         FindRightController();
     }
 
     void Update()
     {
-        // אם איבדנו רפרנס לבקר – ננסה שוב
         if (!rightController.isValid)
             FindRightController();
 
-        // קורא את כפתור B (secondaryButton)
+        // כפתור B (secondaryButton ביד ימין)
         if (rightController.isValid &&
-            rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool bPressed))
+            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out bool bPressed))
         {
-            // Edge detection: מעבר מ-לא לחוץ ללחוץ
             if (bPressed && !lastBPressed && Time.unscaledTime - lastToggleTime >= buttonDebounceSeconds)
             {
                 TogglePause();
@@ -69,7 +72,18 @@ public class VRPauseManager : MonoBehaviour
         isPaused = !isPaused;
 
         // זמן משחק
-        Time.timeScale = isPaused ? 0f : 1f;
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            // אם עדיין יש נעילת התחלה של מסך ההוראות – השאר timeScale=0
+            if (instructionsOverlay != null && instructionsOverlay.IsInitialLockActive)
+                Time.timeScale = 0f;
+            else
+                Time.timeScale = 1f;
+        }
 
         // UI
         if (pauseMenuRoot != null)
@@ -79,7 +93,10 @@ public class VRPauseManager : MonoBehaviour
         if (pauseAudio)
             AudioListener.pause = isPaused;
 
-        // עדכון UI שלא תלוי ב-timeScale
+        // אינטגרציה עם מסך הוראות:
+        if (isPaused) instructionsOverlay?.NotifyPauseOpened();   // יחסום Y ויסגור הוראות אם פתוח
+        else          instructionsOverlay?.NotifyPauseClosed();   // יחזיר אפשרות לפתוח הוראות
+
         Canvas.ForceUpdateCanvases();
     }
 
@@ -94,30 +111,39 @@ public class VRPauseManager : MonoBehaviour
     {
         // בטל Pause לחלוטין
         isPaused = false;
-        Time.timeScale = 1f;
+
+        // אם עדיין יש נעילת התחלה של ההוראות – שמור על timeScale=0, אחרת 1
+        if (instructionsOverlay != null && instructionsOverlay.IsInitialLockActive)
+            Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
+
         if (pauseAudio) AudioListener.pause = false;
 
-        // כבה את תפריט ה-Pause כדי שלא יופיע מעל הפייד
         if (pauseMenuRoot != null)
             pauseMenuRoot.SetActive(false);
 
-        // מעבר עם פייד אם יש Fader; אחרת מעבר רגיל
+        // עדכן את ההוראות שה-Pause נסגר
+        instructionsOverlay?.NotifyPauseClosed();
+
         if (ScreenFader.Instance != null)
-        {
             ScreenFader.Instance.FadeToScene(menuSceneName);
-        }
         else
-        {
             SceneManager.LoadScene(menuSceneName);
-        }
     }
 
     void OnDisable()
     {
         // להבטיח שלא נישאר ב-Pause אם הסקריפט ירד
-        Time.timeScale = 1f;
+        isPaused = false;
+        if (instructionsOverlay != null && instructionsOverlay.IsInitialLockActive)
+            Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
+
         if (pauseAudio) AudioListener.pause = false;
         if (pauseMenuRoot != null) pauseMenuRoot.SetActive(false);
-        isPaused = false;
+
+        instructionsOverlay?.NotifyPauseClosed();
     }
 }
