@@ -16,16 +16,26 @@ namespace DoorScript
 		public AudioSource asource;
 		public AudioClip openDoor, closeDoor;
 		// Use this for initialization
-		void Start()
+		public RoomManager roomManager;
+		public BoxCollider boxCollider;
+        void Start()
 		{
 			asource = GetComponent<AudioSource>();
-            if (!fullPuzzleObject)
-                fullPuzzleObject = GameObject.FindWithTag("FullPuzzle");
+			if (!fullPuzzleObject)
+				fullPuzzleObject = GameObject.FindWithTag("FullPuzzle");
+
+			if (roomManager == null)
+			{
+				roomManager = RoomManager.Instance;
+            }
+
+            boxCollider = GetComponent<BoxCollider>();
+
 
         }
 
-		// Update is called once per frame
-		void Update()
+            // Update is called once per frame
+        void Update()
 		{
 			if (open)
 			{
@@ -47,10 +57,10 @@ namespace DoorScript
 		{
 			Debug.Log("entering open door");
             if (fullPuzzleObject) fullPuzzleObject.SetActive(false);
+			if(boxCollider) boxCollider.isTrigger = true;
             open = !open;
 			asource.clip = open ? openDoor : closeDoor;
 			asource.Play();
-
             Debug.Log("done with open door");
 
 		}

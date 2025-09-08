@@ -9,8 +9,16 @@ public class Destroy : MonoBehaviour
     private Material mat;
 
     [SerializeField] private DoorScript.Door door;
+    public RoomManager roomManager;
 
-
+    private void Awake()
+    {
+       if(roomManager == null)
+        {
+            //roomManager = FindFirstObjectByType<RoomManager>();
+            roomManager = RoomManager.Instance;
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Hammer")
@@ -34,8 +42,12 @@ public class Destroy : MonoBehaviour
             }
 
 
-            Destroy(gameObject);
+            roomManager.CompleteMission();
+            Debug.Log("comlete mission from destroy script");
             door?.OpenDoor();  // קריאה לפתיחה
+            Debug.Log("door open from destroy script");
+            Destroy(gameObject);
+
         }
     }
 

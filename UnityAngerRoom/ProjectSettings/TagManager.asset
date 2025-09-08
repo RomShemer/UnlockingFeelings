@@ -12,6 +12,10 @@ TagManager:
   - SadnessBook
   - Key
   - Hammer
+  - joyDoor
+  - angerDoor
+  - fearDoor
+  - sadnessDoor
   layers:
   - Default
   - TransparentFX
@@ -39,14 +43,8 @@ TagManager:
   - camerasee
   - tample
   - piano
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - wall
+  - punching bag
   - 
   - 
   - 
