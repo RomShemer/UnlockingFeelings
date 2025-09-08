@@ -6809,7 +6809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3706fceb387eddb4ab8338e4202eed14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressBarUI: {fileID: 0}
+  progressBarUI: {fileID: 1818505526}
 --- !u!1 &257547898
 GameObject:
   m_ObjectHideFlags: 0
@@ -17531,6 +17531,7 @@ MonoBehaviour:
   pauseAudio: 1
   buttonDebounceSeconds: 0.25
   menuSceneName: menuScene
+  instructionsOverlay: {fileID: 0}
 --- !u!114 &708338707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55774,7 +55775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e884d9f5e44fd42e48edd475c6ab4f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSeconds: 20
+  startSeconds: 300
   autoStart: 1
   sceneToLoadOnEnd: loseRoom
   tmpText: {fileID: 1362480437}

@@ -5,49 +5,54 @@ public class BookPodiumSnap : MonoBehaviour
     [Tooltip("עוגן על הפודיום אליו הספר יינעל")]
     public Transform podiumAnchor;
 
-    [Tooltip("לדרוש שהשורש יהיה מתויג 'Book' כדי להתעלם מידיים/שחקן")]
-    public bool requireBookTag = true;
+    [Tooltip("בדוק תגיות? אם true – נדרוש שהשורש יהיה מתויג 'Book'")]
+    public bool requireBookTag = false;
 
-    void OnTriggerEnter(Collider other) => TrySnap(other);
-    void OnTriggerStay(Collider other)  => TrySnap(other);
+    void OnTriggerEnter(Collider other)
+    {
+        TrySnap(other);
+    }
+
+    void OnTriggerStay(Collider other) // גיבוי אם פספסנו פריים
+    {
+        TrySnap(other);
+    }
 
     void TrySnap(Collider other)
     {
-        // קח תמיד את השורש של האובייקט שנכנס לטריגר (אם יש Rigidbody – זה יהיה השורש שלו)
+        // קח את השורש (אם הקוליידר שייך לילד של הספר)
         Transform root = other.attachedRigidbody ? other.attachedRigidbody.transform : other.transform.root;
 
-        // סינון 1: תגית Book (מומלץ)
         if (requireBookTag && !root.CompareTag("Book")) return;
 
-        // סינון 2: חייב להיות עליו ספר אמיתי (BookVariantSwitcher)
         var switcher = root.GetComponentInChildren<BookVariantSwitcher>(true);
-        if (switcher == null) return; // לא ספר -> להתעלם (כך היד/ה-XR Origin לא יסתנפו)
+        var reader   = root.GetComponentInChildren<EspImuReader>(true);
+        var rb       = root.GetComponentInChildren<Rigidbody>(true);
 
-        // עכשיו בטוח שזה הספר.
-        var reader = root.GetComponentInChildren<EspImuReader>(true);
-        var rb     = root.GetComponentInChildren<Rigidbody>(true);
+        // פתח ונעל דרך הסוויצ'ר (מבטל גרב/קוליידרים לפי הדגלים)
+        if (switcher != null)
+        {
+            // וודא שהדגלים מכוונים באינספקטור:
+            // switcher.disableGrabWhenOpen = true;
+            // switcher.disableCollidersWhenOpen = true; // אם תרצה
+            switcher.OpenAndHardLock();
+        }
 
-        // פתח ונעל דרך הסוויצ'ר
-        switcher.OpenAndHardLock();
-
-        // עצירת פיזיקה מוחלטת
+        // עצירת פיזיקה “בכוח”
         if (rb != null)
         {
             rb.isKinematic = true;
-            rb.linearVelocity  = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.constraints     = RigidbodyConstraints.FreezeAll;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
 
-        // נעל את ה-ESP למצב PodiumLocked (מנתק מהחיישן)
+        // נעל ESP לפודיום (מתעלם מהחיישן)
         if (reader != null && podiumAnchor != null)
             reader.SnapToPodium(podiumAnchor);
 
-        // הצבה מידית על העוגן
+        // הצבה מידית על העוגן (בלי לחכות ל-FixedUpdate)
         if (podiumAnchor != null)
             root.SetPositionAndRotation(podiumAnchor.position, podiumAnchor.rotation);
-
-        // Debug (לא חובה)
-        // Debug.Log($"[PodiumSnap] Snapped book '{root.name}' to '{podiumAnchor.name}'");
     }
 }

@@ -8,6 +8,9 @@ public class Destroy : MonoBehaviour
     public float fadeDuration = 2f;
     private Material mat;
 
+    [SerializeField] private DoorScript.Door door;
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Hammer")
@@ -31,7 +34,8 @@ public class Destroy : MonoBehaviour
             }
 
 
-            Destroy(gameObject); 
+            Destroy(gameObject);
+            door?.OpenDoor();  // קריאה לפתיחה
         }
     }
 

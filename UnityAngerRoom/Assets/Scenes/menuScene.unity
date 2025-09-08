@@ -9285,6 +9285,7 @@ GameObject:
   - component: {fileID: 596477131}
   - component: {fileID: 596477130}
   - component: {fileID: 596477132}
+  - component: {fileID: 596477133}
   m_Layer: 0
   m_Name: gameManager
   m_TagString: Untagged
@@ -9338,6 +9339,18 @@ MonoBehaviour:
   - winRoom
   excludeCurrentScene: 1
   avoidRepeatLastPick: 1
+--- !u!114 &596477133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596477129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f449966a4e34d4d7486df6006f9ff457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &596649323
 GameObject:
   m_ObjectHideFlags: 0
@@ -11927,6 +11940,50 @@ MonoBehaviour:
   websocketUrl: wss://4a99-2a0d-6fc7-601-dd0f-8587-2da3-94ba-e2b1.ngrok-free.app/ws/sensor
   hammer: {fileID: 782628376}
   debugText: {fileID: 0}
+--- !u!1 &784279246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 784279248}
+  - component: {fileID: 784279247}
+  m_Layer: 0
+  m_Name: runStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &784279247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784279246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86ff6b4588624552994cd1fe684e1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &784279248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784279246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3301488, y: 4.9211373, z: -3.467139}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &788322881
 GameObject:
   m_ObjectHideFlags: 0
@@ -30045,6 +30102,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 596477133}
+        m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+        m_MethodName: ResetRunStats
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1914348260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35637,3 +35706,4 @@ SceneRoots:
   - {fileID: 302724042}
   - {fileID: 655975270}
   - {fileID: 832103563}
+  - {fileID: 784279248}
