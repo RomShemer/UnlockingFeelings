@@ -8,86 +8,93 @@ public class RoomRunManager : MonoBehaviour
 {
     public static RoomRunManager Instance { get; private set; }
 
-    [Header("Include / Exclude Filters")]
-    [Tooltip("אם לא ריק – ניקח רק סצינות שהנתיב שלהן מכיל אחד מהמקטעים האלה (למשל \"Scenes/Rooms\")")]
-    public List<string> includePathTokens = new List<string>();     // דוגמה: { "Scenes/Rooms" }
+    // ====== DOORS MODE (חדש) ======
+    [Header("Doors mode (menu)")]
+    [Tooltip("לאפשר טעינה דרך דלתות כבר בתחילת המשחק (אופציונלי).")]
+    public bool doorsEnabledAtStart = false;
 
-    [Tooltip("אם הרשימה לא ריקה – ניקח רק שמות שמופיעים פה (מתעלם מה-includePathTokens)")]
-    public List<string> includeExactNames = new List<string>();     // דוגמה: { "JoyRoom", "AngerRoom", "FearRoom", "SadnessRoom" }
+    /// <summary>מצב השער: האם מותר לדלתות לטעון סצנות כעת.</summary>
+    public bool DoorsEnabled { get; private set; }
+    public static bool AreDoorsEnabled => Instance != null && Instance.DoorsEnabled;
 
-    [Tooltip("שמות סצינה שלא ייכנסו להגרלה")]
-    public List<string> excludeExactNames = new List<string>
+    /// <summary>
+    /// כפתור “משחק חדש” כשבוחרים חדרים דרך דלתות:
+    /// - מאפס ביקורים בלודר
+    /// - מאפס מצב ריצה פנימי
+    /// - מאפשר טעינה דרך דלתות
+    /// </summary>
+    public void NewGameDoorsMode()
     {
-        "menu", "menuScene", "mainmenu", "end", "credits", "bootstrap", "loading"
-    };
+        var loader = SceneLoader.Instance ?? FindFirstObjectByType<SceneLoader>();
+        if (loader != null)
+            loader.ResetVisitedAndProgress();
 
-    [Tooltip("אם שם הסצינה מתחיל באחד מהערכים – תוחרג")]
+        runActive = false;
+        remaining.Clear();
+
+        SetDoorsEnabled(true);
+        Debug.Log("[RoomRunManager] New Game (doors mode): visited cleared; doors enabled.");
+    }
+
+    public void LoadMenu()
+    {
+        var loader = SceneLoader.Instance ?? FindFirstObjectByType<SceneLoader>();
+        if (loader != null)
+            loader.LoadMenu();
+    }
+
+    /// <summary>לאפשר/לחסום טעינה דרך דלתות בכל שלב.</summary>
+    public void SetDoorsEnabled(bool on) => DoorsEnabled = on;
+
+    // ====== Include / Exclude (כמו שהיה) ======
+    [Header("Include / Exclude Filters")]
+    public List<string> includePathTokens = new List<string>();
+    public List<string> includeExactNames = new List<string>();
+    public List<string> excludeExactNames = new List<string>
+    { "menu", "menuScene", "mainmenu", "end", "credits", "bootstrap", "loading" };
     public List<string> excludeNamePrefixes = new List<string> { "dev_", "test_", "ui_" };
-
-    [Tooltip("אם שם הסצינה מכיל אחד מהערכים – תוחרג")]
     public List<string> excludeNameSubstrings = new List<string> { "demo", "prototype" };
 
     [Header("Flow")]
-    [Tooltip("שם סצינת התפריט הראשי לחזרה בסוף הריצה")]
     public string mainMenuScene = "menu";
-
-    [Tooltip("סצינת סיום (אופציונלי). אם ריק – חוזרים לתפריט בסוף")]
     public string endScene = "";
-
-    [Tooltip("לאבחון/בדיקות: סדר אקראי קבוע")]
     public bool useFixedSeed = false;
-
     public int fixedSeed = 12345;
 
     [Header("Fade (ScreenFader)")]
-    [Tooltip("משך ה-FadeOut לפני טעינת סצינה")]
     public float fadeOut = 0.8f;
-
-    [Tooltip("שהייה על שחור לפני/אחרי טעינה")]
     public float fadeHold = 0.15f;
-
-    [Tooltip("משך ה-FadeIn אחרי טעינה")]
     public float fadeIn = 0.8f;
-
     public Color fadeColor = Color.black;
 
-    // ===== מצב ריצה =====
+    // ===== מצב ריצה (כמו שהיה) =====
     private readonly List<string> remaining = new List<string>();
     private bool runActive = false;
-    private bool transitionLock = false; // מונע טרנזישן כפול
+    private bool transitionLock = false;
 
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        DoorsEnabled = doorsEnabledAtStart; // סטארט ברירת מחדל
     }
 
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+    void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // בטיחות: אם הסצינה שנטענה איכשהו עוד ברשימת החדרים – הסר כדי שלא נחזור אליה
         if (runActive)
         {
             int idx = remaining.IndexOf(scene.name);
             if (idx >= 0) remaining.RemoveAt(idx);
         }
-        // שחרור הנעילה אחרי טעינה
         transitionLock = false;
     }
 
-    /// <summary>
-    /// התחלת ריצה מלאה: בונה Pool מתוך Build Settings, מערבל, טוען את הראשון עם פייד, ומסיר אותו מהרשימה.
-    /// </summary>
+    // ===== ריצה אקראית (כמו שהיה, למצב “מסלול”) =====
     public void StartNewRun()
     {
         var pool = BuildRoomPool();
@@ -99,18 +106,16 @@ public class RoomRunManager : MonoBehaviour
 
         remaining.Clear();
         remaining.AddRange(Shuffle(pool));
-
         runActive = true;
+
+        // כשעובדים במצב “מסלול”, נטריל את הדלתות כדי שלא יעקפו את הרצף
+        SetDoorsEnabled(false);
 
         string first = remaining[0];
         remaining.RemoveAt(0);
         LoadWithFade(first);
     }
 
-    /// <summary>
-    /// אופציונלי: אם כבר טעינת ידנית חדר ראשון (ע\"י סקריפט אחר),
-    /// תמשיך ריצה בלי לחזור לחדר הנוכחי.
-    /// </summary>
     public void StartRunKeepingCurrent()
     {
         var pool = BuildRoomPool();
@@ -119,25 +124,18 @@ public class RoomRunManager : MonoBehaviour
             Debug.LogError("[RoomRunManager] No candidate room scenes. Check filters / Build Settings.");
             return;
         }
-
         string current = SceneManager.GetActiveScene().name;
         pool.RemoveAll(n => n == current);
 
         remaining.Clear();
         remaining.AddRange(Shuffle(pool));
         runActive = true;
-    }
 
-    /// <summary>
-    /// קריאה מהדלת/טריגר של סוף חדר – טוען את הבא עם פייד. כשנגמרים חדרים: סצינת סיום/תפריט.
-    /// </summary>
+        SetDoorsEnabled(false);
+    }
     public void LoadNextRoom()
     {
-        if (!runActive)
-        {
-            Debug.LogWarning("[RoomRunManager] Run is not active. Ignoring LoadNextRoom.");
-            return;
-        }
+        if (!runActive) { Debug.LogWarning("[RoomRunManager] Run is not active."); return; }
         if (transitionLock) return;
         transitionLock = true;
 
@@ -154,9 +152,6 @@ public class RoomRunManager : MonoBehaviour
         LoadWithFade(next);
     }
 
-    /// <summary>
-    /// חזרה יזומה לתפריט (למשל מכפתור Pause).
-    /// </summary>
     public void ReturnToMenu()
     {
         runActive = false;
@@ -168,11 +163,10 @@ public class RoomRunManager : MonoBehaviour
         }
     }
 
-    // ===== עזרי טעינה =====
+    // ===== טעינה עם פייד =====
     private void LoadWithFade(string sceneName)
     {
-        // אם אתה מריץ סצינת חדר ישירות ללא תפריט: ודא שיש פיידר
-        EnsureFader(); // בטל שורה זו אם תמיד טוענים דרך ה-Menu
+        EnsureFader();
 
         if (ScreenFader.Instance != null)
         {
@@ -181,22 +175,20 @@ public class RoomRunManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[RoomRunManager] ScreenFader.Instance == null → fallback load (no fade).");
+            Debug.LogWarning("[RoomRunManager] No ScreenFader found → direct load.");
             SceneManager.LoadScene(sceneName);
-            transitionLock = false; // שחרור ידני בפולבק
+            transitionLock = false;
         }
     }
 
     private void EnsureFader()
     {
         if (ScreenFader.Instance != null) return;
-
-        // צור פיידר סינגלטון בזמן ריצה כדי להבטיח פייד גם כשמריצים סצינת חדר ישירות
         var go = new GameObject("ScreenFader");
-        go.AddComponent<ScreenFader>(); // ה-Awake של ScreenFader כבר עושה DontDestroyOnLoad + חיבור מצלמה
+        go.AddComponent<ScreenFader>();
     }
 
-    // ===== בניית מאגר החדרים =====
+    // ===== בניית מאגר חדרים =====
     private List<string> BuildRoomPool()
     {
         var list = new List<string>();
@@ -204,27 +196,24 @@ public class RoomRunManager : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            string path = SceneUtility.GetScenePathByBuildIndex(i);  // e.g. Assets/Scenes/Rooms/JoyRoom.unity
-            string name = Path.GetFileNameWithoutExtension(path);    // e.g. JoyRoom
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            string name = Path.GetFileNameWithoutExtension(path);
             if (string.IsNullOrWhiteSpace(name)) continue;
 
             if (!IsEligible(name, path)) continue;
             list.Add(name);
         }
-
         return list.Distinct().ToList();
     }
 
     private bool IsEligible(string sceneName, string scenePath)
     {
-        // 1) White-list לפי שם
         if (includeExactNames != null && includeExactNames.Count > 0)
         {
             if (!includeExactNames.Contains(sceneName)) return false;
         }
         else
         {
-            // 2) include לפי נתיב
             if (includePathTokens != null && includePathTokens.Count > 0)
             {
                 string p = scenePath.Replace("\\", "/");
@@ -235,17 +224,12 @@ public class RoomRunManager : MonoBehaviour
             }
         }
 
-        // 3) Blacklist – שם מדויק
         if (excludeExactNames != null && excludeExactNames.Contains(sceneName)) return false;
-
-        // 4) Blacklist – תחיליות
         if (excludeNamePrefixes != null && excludeNamePrefixes.Any(pre =>
-                !string.IsNullOrEmpty(pre) && sceneName.StartsWith(pre))) return false;
-
-        // 5) Blacklist – מחרוזות בתוך השם
+            !string.IsNullOrEmpty(pre) && sceneName.StartsWith(pre))) return false;
         if (excludeNameSubstrings != null && excludeNameSubstrings.Any(sub =>
-                !string.IsNullOrEmpty(sub) &&
-                sceneName.IndexOf(sub, System.StringComparison.OrdinalIgnoreCase) >= 0)) return false;
+            !string.IsNullOrEmpty(sub) &&
+            sceneName.IndexOf(sub, System.StringComparison.OrdinalIgnoreCase) >= 0)) return false;
 
         return true;
     }

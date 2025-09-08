@@ -29,6 +29,8 @@ public class PuzzleGameManager : MonoBehaviour
     private int totalPieces = 16; 
     private int connectedPieces = 0;
 
+    public RoomManager roomManager;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,6 +40,12 @@ public class PuzzleGameManager : MonoBehaviour
         }
         Instance = this;
         progressBarUI.Init(16); // 16 חלקים
+
+        if(roomManager == null)
+        {
+            roomManager = RoomManager.Instance;
+            //roomManager = FindFirstObjectByType<RoomManager>();
+        }
     }
 
     // =============================
@@ -365,6 +373,7 @@ public class PuzzleGameManager : MonoBehaviour
     private void OnPuzzleComplete()
     {
         Debug.Log("finish puzzel- open door");
+        roomManager.CompleteMission();
         door?.OpenDoor();  // קריאה לפתיחה
     }
 }

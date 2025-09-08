@@ -13,6 +13,12 @@ public class JarButterflyShow : MonoBehaviour
     [Tooltip("שורשי הפרפרים שישתחררו")]
     public List<Transform> butterflies = new List<Transform>();
 
+    [Header("UI (Optional)")]
+    [Tooltip("CanvasGroup של הקנבס עם הכפתור 'click to release butterflies'")]
+    public CanvasGroup releaseCanvas;
+    [Tooltip("משך הפייד החוצה של הקנבס")]
+    public float canvasFadeOutTime = 0.25f;
+
     [Header("One Shot")]
     [Tooltip("האם לאפשר רק פעם אחת")]
     public bool oneShot = true;
@@ -43,7 +49,7 @@ public class JarButterflyShow : MonoBehaviour
     [Tooltip("אם ריק -> jarBody ואם גם הוא ריק -> this.transform")]
     public Transform lineupAnchor;
     [Tooltip("מרכז השורה במרחב המקומי של העוגן: X=ימין, Y=למעלה, Z=קדימה")]
-    public Vector3 lineupLocalOffset = new Vector3(0f, 0.6f, 0.0f);
+    public Vector3 lineupLocalOffset = new Vector3(0f, 0.45f, 0.25f);   // ↓ נמוך יותר וקדימה
     [Tooltip("מרווח אופקי בין פרפרים (מטרים)")]
     public float horizontalSpacing = 0.32f;
     [Tooltip("זמן ההתיישרות לנקודת הקבע (שניות)")]
@@ -60,7 +66,6 @@ public class JarButterflyShow : MonoBehaviour
     [Header("Events (Optional)")]
     public UnityEvent onReleasedOnce;
 
-    // ---------- חדש: שליטה באינטראקציה ----------
     [Header("Interaction Lock")]
     [Tooltip("נעל תפיסה עד סיום ההתיישרות בשורה")]
     public bool lockGrabUntilLineup = true;
@@ -88,6 +93,14 @@ public class JarButterflyShow : MonoBehaviour
     {
         if (running) return;
         if (oneShot && hasPlayed) return;
+
+        // כבה מיידית אינטראקטיביות של הקנבס כדי שלא ילחצו פעמיים
+        if (releaseCanvas != null)
+        {
+            releaseCanvas.interactable = false;
+            releaseCanvas.blocksRaycasts = false;
+        }
+
         StartCoroutine(PlaySequence());
     }
 
@@ -98,9 +111,9 @@ public class JarButterflyShow : MonoBehaviour
 
         // 1) פתיחת מכסה
         if (jarCap != null)
-            yield return StartCoroutine(AnimateCapOpen()); // יהפוך ל-inactive בסוף אם מסומן
+            yield return StartCoroutine(AnimateCapOpen());
 
-        // 2) יציאה + התייצבות מעל הצנצנת
+        // 2) יציאה + התייצבות
         if (butterflies != null && butterflies.Count > 0)
         {
             Transform anchor = lineupAnchor != null ? lineupAnchor :
@@ -111,7 +124,6 @@ public class JarButterflyShow : MonoBehaviour
             Vector3 right  = anchor.right;
             float totalWidth = (butterflies.Count - 1) * horizontalSpacing;
 
-            // רוטציית יעד אחידה לכולם
             Quaternion targetLook = BuildFaceUpRotation();
 
             for (int i = 0; i < butterflies.Count; i++)
@@ -125,11 +137,29 @@ public class JarButterflyShow : MonoBehaviour
             }
         }
 
-        // חכה שכל מי שהתחיל – יסיים (מרווח ביטחון קטן)
+        // חכה לכל האנימציות + מרווח ביטחון קטן
         yield return new WaitForSeconds(exitTime + lineupTime + 0.2f);
+
+        // 3) פייד אאוט לקנבס (אם קיים)
+        if (releaseCanvas != null)
+            yield return StartCoroutine(FadeOutCanvas(releaseCanvas, canvasFadeOutTime));
 
         if (oneShot) onReleasedOnce?.Invoke();
         running = false;
+    }
+
+    private IEnumerator FadeOutCanvas(CanvasGroup cg, float time)
+    {
+        float t = 0f;
+        float start = cg.alpha;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / Mathf.Max(0.01f, time);
+            cg.alpha = Mathf.Lerp(start, 0f, t);
+            yield return null;
+        }
+        cg.alpha = 0f;
+        cg.gameObject.SetActive(false); // להיעלם לגמרי
     }
 
     private Quaternion BuildFaceUpRotation()
@@ -167,7 +197,6 @@ public class JarButterflyShow : MonoBehaviour
         jarCap.localRotation = targetRot;
         jarCap.localPosition = targetPos;
 
-        // NEW: לכבות את המכסה לאחר שהסתיים האנימציה
         if (deactivateCapAfterOpen && jarCap.gameObject.activeSelf)
             jarCap.gameObject.SetActive(false);
     }
@@ -185,7 +214,7 @@ public class JarButterflyShow : MonoBehaviour
 
         Quaternion startRot = b.rotation;
 
-        // שלב 1: קשת (Bezier)
+        // קשת
         float t = 0f;
         while (t < 1f)
         {
@@ -196,7 +225,7 @@ public class JarButterflyShow : MonoBehaviour
             yield return null;
         }
 
-        // שלב 2: התייצבות לנקודת הקבע
+        // התייצבות
         Vector3 start = b.position;
         Vector3 final = preLineTarget;
         Quaternion r0 = b.rotation, r1 = targetLook;
@@ -210,9 +239,8 @@ public class JarButterflyShow : MonoBehaviour
             yield return null;
         }
 
-        b.rotation = r1; // ודא נעילה לרוטציית היעד
+        b.rotation = r1;
 
-        // NEW: בשלב הזה מותר לתפוס
         if (lockGrabUntilLineup)
             SetButterflyGrabActive(b, true);
     }
@@ -223,18 +251,14 @@ public class JarButterflyShow : MonoBehaviour
         return (u * u * p0) + (2f * u * t * p1) + (t * t * p2);
     }
 
-    // --------- NEW: הפעלה/כיבוי של רכיבי תפיסה רלוונטיים ---------
     private void SetButterflyGrabActive(Transform root, bool active)
     {
         if (root == null) return;
 
-        // כבה/הפעל כל קומפוננטה רלוונטית לתפיסה (Interaction SDK / Meta XR / Oculus / XR)
         foreach (var beh in root.GetComponentsInChildren<Behaviour>(true))
         {
             if (beh == null) continue;
             string n = beh.GetType().Name;
-
-            // דוגמאות נפוצות: Grabbable, RayInteractable, GrabInteractable, RayGrabInteractable, OVRGrabbable, XRGrabInteractable, וכו'
             if (n.Contains("Grabbable") ||
                 n.Contains("GrabInteractable") ||
                 n.Contains("RayInteractable") ||

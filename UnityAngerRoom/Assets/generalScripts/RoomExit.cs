@@ -7,7 +7,17 @@ public class RoomExit : MonoBehaviour
     public string playerTag = "Default";
 
     bool fired = false;
+    public RoomManager roomManager;
 
+    public void Start()
+    {
+        if (roomManager == null)
+        {
+            roomManager = RoomManager.Instance;
+            if (roomManager == null)
+                Debug.LogWarning("[RoomExit] No RoomManager instance found in scene.");
+        }
+    }
     private void Reset()
     {
         var col = GetComponent<Collider>();
@@ -16,42 +26,84 @@ public class RoomExit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[RoomExit] Trigger enter by {other.name} (tag={other.tag})");
+        if (roomManager !=null && roomManager.IsMissionCompleted())
+        {
+            Debug.Log($"[RoomExit] Trigger enter by {other.name} (tag={other.tag})");
 
-        if (fired)
-        {
-            Debug.Log("[RoomExit] Already fired once, ignoring.");
-            return;
-        }
+            //if (fired)
+            //{
+            //    Debug.Log("[RoomExit] Already fired once, ignoring.");
+            //    return;
+            //}
 
-        if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag))
-        {
-            Debug.Log($"[RoomExit] Ignored because tag mismatch (expected={playerTag}).");
-            return;
-        }
+            //if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag))
+            //{
+            //    Debug.Log($"[RoomExit] Ignored because tag mismatch (expected={playerTag}).");
+            //    return;
+            //}
 
-        fired = true;
-        Debug.Log("[RoomExit] Trigger accepted, processing exit...");
+            fired = true;
+            Debug.Log("[RoomExit] Trigger accepted, processing exit...");
 
-        // --- חדש: רושם שהחדר הנוכחי הושלם ---
-        if (RunStats.Instance != null)
-        {
-            RunStats.Instance.CompleteCurrent("exit");
-            Debug.Log("[RoomExit] Marked current room as completed in RunStats.");
-        }
-        else
-        {
-            Debug.LogWarning("[RoomExit] RunStats.Instance == null (no stats recorded).");
-        }
+            // --- חדש: רושם שהחדר הנוכחי הושלם ---
+            if (RunStats.Instance != null)
+            {
+                RunStats.Instance.CompleteCurrent("exit");
+                Debug.Log("[RoomExit] Marked current room as completed in RunStats.");
+            }
+            else
+            {
+                Debug.LogWarning("[RoomExit] RunStats.Instance == null (no stats recorded).");
+            }
 
-        if (RoomRunManager.Instance != null)
+            if (RoomRunManager.Instance != null)
+            {
+                Debug.Log("[RoomExit] Calling RoomRunManager.LoadNextRoom()");
+                RoomRunManager.Instance.LoadMenu(); // המנהל כבר עושה FadeToScene
+            }
+            else
+            {
+                Debug.LogError("[RoomExit] No RoomRunManager in scene.");
+            }
+        } else if(roomManager == null)
         {
-            Debug.Log("[RoomExit] Calling RoomRunManager.LoadNextRoom()");
-            RoomRunManager.Instance.LoadNextRoom(); // המנהל כבר עושה FadeToScene
-        }
-        else
-        {
-            Debug.LogError("[RoomExit] No RoomRunManager in scene.");
+            Debug.Log($"[RoomExit] Trigger enter by {other.name} (tag={other.tag})");
+
+            if (fired)
+            {
+                Debug.Log("[RoomExit] Already fired once, ignoring.");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag))
+            {
+                Debug.Log($"[RoomExit] Ignored because tag mismatch (expected={playerTag}).");
+                return;
+            }
+
+            fired = true;
+            Debug.Log("[RoomExit] Trigger accepted, processing exit...");
+
+            // --- חדש: רושם שהחדר הנוכחי הושלם ---
+            if (RunStats.Instance != null)
+            {
+                RunStats.Instance.CompleteCurrent("exit");
+                Debug.Log("[RoomExit] Marked current room as completed in RunStats.");
+            }
+            else
+            {
+                Debug.LogWarning("[RoomExit] RunStats.Instance == null (no stats recorded).");
+            }
+
+            if (RoomRunManager.Instance != null)
+            {
+                Debug.Log("[RoomExit] Calling RoomRunManager.LoadNextRoom()");
+                RoomRunManager.Instance.LoadMenu(); // המנהל כבר עושה FadeToScene
+            }
+            else
+            {
+                Debug.LogError("[RoomExit] No RoomRunManager in scene.");
+            }
         }
     }
 }

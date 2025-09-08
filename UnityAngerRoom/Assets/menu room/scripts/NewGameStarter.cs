@@ -6,7 +6,8 @@ public class NewGameStarter : MonoBehaviour
     {
         if (RoomRunManager.Instance != null)
         {
-            RoomRunManager.Instance.StartNewRun(); // מגריל חדר ראשון ומטעין אותו עם פייד
+            RoomRunManager.Instance.NewGameDoorsMode(); // מאפס ביקורים ומאפשר טעינה דרך דלתות
+            //RoomRunManager.Instance.StartNewRun(); // מגריל חדר ראשון ומטעין אותו עם פייד
         }
         else
         {

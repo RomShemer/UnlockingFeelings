@@ -9,8 +9,16 @@ public class Destroy : MonoBehaviour
     private Material mat;
 
     [SerializeField] private DoorScript.Door door;
+    public RoomManager roomManager;
 
-
+    private void Awake()
+    {
+       if(roomManager == null)
+        {
+            //roomManager = FindFirstObjectByType<RoomManager>();
+            roomManager = RoomManager.Instance;
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Hammer")
@@ -34,8 +42,12 @@ public class Destroy : MonoBehaviour
             }
 
 
+            roomManager.CompleteMission();
+            Debug.Log("comlete mission from destroy script");
+            door?.OpenDoor();  // ÷øéàä ìôúéçä
+            Debug.Log("door open from destroy script");
             Destroy(gameObject);
-            door?.OpenDoor();  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
         }
     }
 
@@ -55,14 +67,14 @@ public class Destroy : MonoBehaviour
     //    }
 
     //    mat.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
-    //    //Destroy(graffitiPlane); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    //    //Destroy(graffitiPlane); // îåç÷ àú äàåáéé÷è áñéåí
     //}
     private System.Collections.IEnumerator FadeOutGraffiti()
     {
         Renderer rend = graffitiPlane.GetComponent<Renderer>();
         Material mat = rend.material;
 
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Standard
+        // äâãøåú ù÷éôåú ìùééãø Standard
         mat.SetFloat("_Mode", 3); // Transparent
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -84,6 +96,6 @@ public class Destroy : MonoBehaviour
         }
 
         mat.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
-        Destroy(graffitiPlane); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Plane ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Destroy(graffitiPlane); // îåç÷ àú äÎPlane àçøé ùäôééã äñúééí
     }
 }
