@@ -35,7 +35,7 @@ public class Destroy : MonoBehaviour
 
 
             Destroy(gameObject);
-            door?.OpenDoor();  // ÷øéàä ìôúéçä
+            door?.OpenDoor();  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -55,14 +55,14 @@ public class Destroy : MonoBehaviour
     //    }
 
     //    mat.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
-    //    //Destroy(graffitiPlane); // îåç÷ àú äàåáéé÷è áñéåí
+    //    //Destroy(graffitiPlane); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     //}
     private System.Collections.IEnumerator FadeOutGraffiti()
     {
         Renderer rend = graffitiPlane.GetComponent<Renderer>();
         Material mat = rend.material;
 
-        // äâãøåú ù÷éôåú ìùééãø Standard
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Standard
         mat.SetFloat("_Mode", 3); // Transparent
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -84,6 +84,6 @@ public class Destroy : MonoBehaviour
         }
 
         mat.color = new Color(startColor.r, startColor.g, startColor.b, 0f);
-        Destroy(graffitiPlane); // îåç÷ àú äÎPlane àçøé ùäôééã äñúééí
+        Destroy(graffitiPlane); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Plane ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 }

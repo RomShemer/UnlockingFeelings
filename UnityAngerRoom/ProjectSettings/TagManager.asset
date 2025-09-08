@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shoot
   - Book
+  - SadnessBook
+  - Key
   - FullPuzzle
   - SadnessBook
   - Key
@@ -25,6 +27,12 @@ TagManager:
   - buildings
   - bfly
   - ground
+  - piano
+  - tample
+  - camerasee
+  - key
+  - podium
+  - 
   - flashlight
   - handsControllers
   - room

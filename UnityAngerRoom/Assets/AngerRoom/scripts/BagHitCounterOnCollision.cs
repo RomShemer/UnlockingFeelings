@@ -3,13 +3,13 @@ using UnityEngine;
 public class BagHitCounterOnCollision : MonoBehaviour
 {
     [Header("Who can hit")]
-    public LayerMask hitterLayers;        // щлбд/еъ щм дйг/фийщ
-    public string[] allowedTags;          // ае ъвйеъ (ма зебд)
+    public LayerMask hitterLayers;        // пїЅпїЅпїЅпїЅ/пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ/пїЅпїЅпїЅпїЅ
+    public string[] allowedTags;          // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅ)
 
     [Header("Hit logic")]
     public int hitsToVanish = 3;
-    public float minRelativeSpeed = 0.6f; // су одйшеъ йзсйъ лгй мдйзщб лолд
-    public float cooldown = 0.05f;        // лгй ма мсфеш фтоййн баеъе овт
+    public float minRelativeSpeed = 0.6f; // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+    public float cooldown = 0.05f;        // пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 
     [Header("VFX/SFX (optional)")]
     public AudioSource audioSource;
@@ -33,7 +33,7 @@ public class BagHitCounterOnCollision : MonoBehaviour
     {
         if (!IsHitter(c.gameObject)) return;
 
-        // одйшеъ йзсйъ бйп долд мщч
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
         float relSpeed = c.relativeVelocity.magnitude;
         if (relSpeed < minRelativeSpeed) return;
 
@@ -51,7 +51,7 @@ public class BagHitCounterOnCollision : MonoBehaviour
 
         if (_hits >= hitsToVanish)
         {
-            gameObject.SetActive(false);   // отмйн аъ дщч
+            gameObject.SetActive(false);   // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
         }
     }
 }

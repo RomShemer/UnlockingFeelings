@@ -9285,6 +9285,7 @@ GameObject:
   - component: {fileID: 596477131}
   - component: {fileID: 596477130}
   - component: {fileID: 596477132}
+  - component: {fileID: 596477133}
   m_Layer: 0
   m_Name: gameManager
   m_TagString: Untagged
@@ -9335,8 +9336,21 @@ MonoBehaviour:
   - menuScene
   - darkRoomFearScenes
   - loseRoom
+  - winRoom
   excludeCurrentScene: 1
   avoidRepeatLastPick: 1
+--- !u!114 &596477133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596477129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f449966a4e34d4d7486df6006f9ff457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &596649323
 GameObject:
   m_ObjectHideFlags: 0
@@ -11926,6 +11940,50 @@ MonoBehaviour:
   websocketUrl: wss://4a99-2a0d-6fc7-601-dd0f-8587-2da3-94ba-e2b1.ngrok-free.app/ws/sensor
   hammer: {fileID: 782628376}
   debugText: {fileID: 0}
+--- !u!1 &784279246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 784279248}
+  - component: {fileID: 784279247}
+  m_Layer: 0
+  m_Name: runStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &784279247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784279246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86ff6b4588624552994cd1fe684e1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &784279248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784279246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3301488, y: 4.9211373, z: -3.467139}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &788322881
 GameObject:
   m_ObjectHideFlags: 0
@@ -12450,6 +12508,76 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 310706476}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &832103561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 832103563}
+  - component: {fileID: 832103562}
+  m_Layer: 0
+  m_Name: RoomRunManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &832103562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832103561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad3172f4204e4c42aa484581b61c645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  includePathTokens: []
+  includeExactNames:
+  - FearScene
+  - JoyScene 1
+  - AngerScene
+  - SadnessScene
+  excludeExactNames:
+  - winRoom
+  - menuScene
+  - loseRoom
+  - darkRoomFearScene
+  excludeNamePrefixes:
+  - dev_
+  - test_
+  - ui_
+  excludeNameSubstrings:
+  - demo
+  - prototype
+  mainMenuScene: menuScene
+  endScene: winRoom
+  useFixedSeed: 0
+  fixedSeed: 12345
+  fadeOut: 0.8
+  fadeHold: 0.15
+  fadeIn: 0.8
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!4 &832103563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832103561}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -4.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832406358
 GameObject:
@@ -29890,6 +30018,7 @@ GameObject:
   - component: {fileID: 1914348260}
   - component: {fileID: 1914348259}
   - component: {fileID: 1914348262}
+  - component: {fileID: 1914348263}
   m_Layer: 5
   m_Name: new game button
   m_TagString: Untagged
@@ -29961,9 +30090,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 596477132}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadRandomScene
+      - m_Target: {fileID: 1914348263}
+        m_TargetAssemblyTypeName: NewGameStarter, Assembly-CSharp
+        m_MethodName: OnNewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 596477133}
+        m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+        m_MethodName: ResetRunStats
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30025,6 +30166,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 734491264}
   clickSound: {fileID: 8300000, guid: ca5a27a6c7f1c44098fc719c3177f342, type: 3}
+--- !u!114 &1914348263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914348257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc39f0be823b4585a80b14b7d484e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1915371504
 GameObject:
   m_ObjectHideFlags: 0
@@ -35552,3 +35705,5 @@ SceneRoots:
   - {fileID: 596477131}
   - {fileID: 302724042}
   - {fileID: 655975270}
+  - {fileID: 832103563}
+  - {fileID: 784279248}
