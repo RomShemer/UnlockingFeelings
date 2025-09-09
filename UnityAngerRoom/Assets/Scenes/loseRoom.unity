@@ -5164,7 +5164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: bc3f7b21-a55c-4cf7-b9c6-78d4341573a4
-  instanceId: a10e82ed-f097-46c5-bb41-1a1113e17473
+  instanceId: fbe3ac4d-f15f-4c84-8f1e-04dcbdde8dc7
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -6270,7 +6270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 5817f7c0-f2a5-45f9-a5ca-64264e0166e8
-  instanceId: ba6c24d3-0f2f-41c0-b8e5-2384a56219ca
+  instanceId: 44f424a6-e00f-481d-a353-86147c07c799
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -8441,10 +8441,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 596477132}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadSceneByName
-        m_Mode: 5
+      - m_Target: {fileID: 1039954114}
+        m_TargetAssemblyTypeName: RunSummaryUI, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9439,12 +9439,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d2672ea404248e4b9360a750378fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  excludeNames:
-  - menuScene
-  - menu
-  - mainmenu
-  excludeCurrentScene: 1
-  avoidRepeatLastPick: 1
+  persistAcrossScenes: 1
+  preventReenterVisited: 1
+  alignFixedOrderOnLoad: 1
+  useFixedOrder: 0
+  loopFixedOrder: 1
+  persistFixedProgress: 1
+  startFixedIndex: 0
+  fixedOrder: []
 --- !u!1 &596649323
 GameObject:
   m_ObjectHideFlags: 0
@@ -10321,7 +10323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f10154e0-16b2-492f-97d0-6639f69e7df6
-  instanceId: 620388b4-47fe-48ce-a949-de2c1f9a78e2
+  instanceId: cf85038f-2379-4ae5-9a6b-88029fa20b8b
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -15876,6 +15878,7 @@ GameObject:
   - component: {fileID: 1039954109}
   - component: {fileID: 1039954112}
   - component: {fileID: 1039954113}
+  - component: {fileID: 1039954114}
   m_Layer: 5
   m_Name: lost Canvas
   m_TagString: Untagged
@@ -15991,7 +15994,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1039954107}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db77943b5d49d4e5eb7b95fb9bb844a5, type: 3}
   m_Name: 
@@ -15999,6 +16002,22 @@ MonoBehaviour:
   achievementsText: {fileID: 1053681054}
   challengesText: {fileID: 428355648}
   progressText: {fileID: 2111287954}
+--- !u!114 &1039954114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039954107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20d1b4070a4a4bfe9b34511b1ae839f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headline: {fileID: 957017017}
+  achievements: {fileID: 1053681054}
+  challenges: {fileID: 428355648}
+  progress: {fileID: 2111287954}
 --- !u!1 &1040785415
 GameObject:
   m_ObjectHideFlags: 0
@@ -18346,7 +18365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 6b67162c-2460-4766-a931-980388647573
-  instanceId: 4109a208-50a5-4e8e-b899-5698882f4801
+  instanceId: 946d87ba-3ffd-4fca-8fba-b920e9e896c6
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -18764,7 +18783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: e47682b9-c270-40b1-b16d-90b627a5ce1b
-  instanceId: 23d3ba11-c3dc-46de-88af-dfafa052c8ea
+  instanceId: 1cb4878c-62bd-4152-a9ef-68c48cc0a174
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -19069,7 +19088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 0393ca30-f2a9-4865-a40f-f9a68d01c3a9
-  instanceId: dcae345c-4868-4458-ae78-1d71be424ca4
+  instanceId: 9ddf2060-197b-485b-8034-fd8d4e89190b
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -20411,7 +20430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 8b26b298-7bf4-490e-b245-a039c0184303
-  instanceId: 791355e8-29d9-41f5-a373-3037d91bafb5
+  instanceId: d59caa8d-bdf1-47c2-bd34-065c7bce06a0
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -22649,7 +22668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: bc3f7b21-a55c-4cf7-b9c6-78d4341573a4
-  instanceId: 89528e98-a89d-48e5-9b1c-164a4c70795d
+  instanceId: 6a7e9a55-5a5d-43ab-8bf5-3e97b6400d60
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -23739,7 +23758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 5817f7c0-f2a5-45f9-a5ca-64264e0166e8
-  instanceId: 03ca1b3e-3e76-4e41-b27d-96de12706f27
+  instanceId: 36e8c1e5-f240-4c88-9247-8dd0c58a803d
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -24786,7 +24805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 6b67162c-2460-4766-a931-980388647573
-  instanceId: 6de47d66-ddff-4b7c-b950-6fa38845f746
+  instanceId: 6a275031-afd0-48c6-884d-8b2562ec75a7
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -26222,7 +26241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 81f55626-5fad-45e9-a1df-184f330da7ba
-  instanceId: c6030c4a-3e52-4bfe-8e52-372f1913989c
+  instanceId: 750d514e-762c-4cd0-8976-7f07a6435543
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -27762,7 +27781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 8b26b298-7bf4-490e-b245-a039c0184303
-  instanceId: 4827cb91-77b7-4794-8ae6-91b71fe3e381
+  instanceId: 1294a3e8-5673-4375-9d28-acf8698fa3e2
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 

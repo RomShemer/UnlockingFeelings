@@ -311,4 +311,3 @@ public class SceneLoader : MonoBehaviour
         return next;
     }
 }
-

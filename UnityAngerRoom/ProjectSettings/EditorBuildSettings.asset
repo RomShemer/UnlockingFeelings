@@ -26,10 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FearScene.unity
     guid: 2943d72a28570354eafaf4c5679bf293
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/loseRoom.unity
     guid: 6c3f6b0b00ade42c9a0ce79cf1d723ea
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/winRoom.unity
     guid: 721f551e2fb8741f1946f9642a8d3214
   m_configObjects:

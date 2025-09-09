@@ -56,6 +56,7 @@ public class ProgressBG : MonoBehaviour
 
     public void Init(int totalTargets)
     {
+        Debug.Log("Debug : ProgressBG.Init עם totalTargets=" + totalTargets, this);
         total = Mathf.Max(1, totalTargets);
         current = 0;
         completed = false;
@@ -68,6 +69,8 @@ public class ProgressBG : MonoBehaviour
         if (completed) return;
 
         current = Mathf.Clamp(current + 1, 0, total);
+        Debug.Log($"[ProgressBG] ReportOne: {current}/{total}"); // <—
+
         UpdateUI();
 
         // ניצוצות
@@ -134,30 +137,30 @@ public class ProgressBG : MonoBehaviour
             }
         }
 
-        if (fadeOutDuration > 0f && canvasGroup)
-            StartCoroutine(FadeOutAndDisable());
-        else if (disableGameObjectAfterFade)
-            gameObject.SetActive(false);
+        //if (fadeOutDuration > 0f && canvasGroup)
+        //    StartCoroutine(FadeOutAndDisable());
+        //else if (disableGameObjectAfterFade)
+            //gameObject.SetActive(false);
     }
 
-    IEnumerator FadeOutAndDisable()
-    {
-        if (fadeOutDelay > 0f) yield return new WaitForSeconds(fadeOutDelay);
+    //IEnumerator FadeOutAndDisable()
+    //{
+    //    if (fadeOutDelay > 0f) yield return new WaitForSeconds(fadeOutDelay);
 
-        float t = 0f;
-        float start = canvasGroup.alpha;
-        while (t < fadeOutDuration)
-        {
-            t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / fadeOutDuration);
-            canvasGroup.alpha = Mathf.Lerp(start, 0f, k);
-            yield return null;
-        }
-        canvasGroup.alpha = 0f;
+    //    float t = 0f;
+    //    float start = canvasGroup.alpha;
+    //    while (t < fadeOutDuration)
+    //    {
+    //        t += Time.deltaTime;
+    //        float k = Mathf.Clamp01(t / fadeOutDuration);
+    //        canvasGroup.alpha = Mathf.Lerp(start, 0f, k);
+    //        yield return null;
+    //    }
+    //    canvasGroup.alpha = 0f;
 
-        if (disableGameObjectAfterFade)
-            gameObject.SetActive(false);
-    }
+    //    if (disableGameObjectAfterFade)
+    //        gameObject.SetActive(false);
+    //}
 
     void UpdateUI()
     {

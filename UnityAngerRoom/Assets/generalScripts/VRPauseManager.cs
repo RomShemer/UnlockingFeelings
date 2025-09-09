@@ -471,4 +471,3 @@ public class VRPauseManager : MonoBehaviour
         isPaused = false;
     }
 }
-

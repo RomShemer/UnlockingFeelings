@@ -32,6 +32,8 @@ public class RoomRunManager : MonoBehaviour
         runActive = false;
         remaining.Clear();
 
+        RunStats.Instance.BeginNewRun();
+
         SetDoorsEnabled(true);
         Debug.Log("[RoomRunManager] New Game (doors mode): visited cleared; doors enabled.");
     }
@@ -40,8 +42,35 @@ public class RoomRunManager : MonoBehaviour
     {
         var loader = SceneLoader.Instance ?? FindFirstObjectByType<SceneLoader>();
         if (loader != null)
-            loader.LoadMenu();
+        {
+            bool finished = RunStats.Instance != null && RunStats.Instance.IsRunFinished();
+
+            if (finished)
+            {
+                RunStats.Instance.GoToSummaryScene();   // יחליט לבד win/lose
+            }
+            else
+            { 
+                loader.LoadMenu(); 
+            }
+            Debug.Log("[RoomExit] Marked current room as completed in RunStats.");
+        }
+
     }
+    
+    public void LoadMainMenuAfterWinLoose()
+    {
+        var loader = SceneLoader.Instance ?? FindFirstObjectByType<SceneLoader>();
+        if (loader != null)
+        {
+            loader.LoadMenu();
+        }
+    }
+    
+    //public void updateRunStatsLoadNewRoom(string roomName)
+    //{
+    //    RunStats.Instance.StartRoom(roomName);
+    //}
 
     /// <summary>לאפשר/לחסום טעינה דרך דלתות בכל שלב.</summary>
     public void SetDoorsEnabled(bool on) => DoorsEnabled = on;

@@ -237,7 +237,11 @@ public class CountdownTimer : MonoBehaviour
         }
 
         // 3) הצג Game Over
-        if (gameOverUI) gameOverUI.SetActive(true);
+        if (gameOverUI)
+			{ 			
+				gameOverUI.SetActive(true);
+				RunStats.Instance.FailCurrent("exit");
+			}
 
         // 4) התחל מעבר אחרי דיליי (לא תלוי timeScale)
         StartCoroutine(LoadAfterDelay());
@@ -261,16 +265,23 @@ public class CountdownTimer : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(gameOverDelay);
 
-        if (ScreenFader.Instance != null)
-        {
-            ScreenFader.Instance.FadeToScene("loseRoom");
-        }
+        if (RunStats.Instance != null && RunStats.Instance.IsRunFinished())
+            RunStats.Instance.GoToSummaryScene();
         else
-        {
-            Time.timeScale = 1f;
-            AudioListener.pause = false;
-            SceneManager.LoadScene("loseRoom");
-        }
+            RoomRunManager.Instance?.LoadMenu();
+
+        //if (ScreenFader.Instance != null)
+        //{
+
+
+        //    ////ScreenFader.Instance.FadeToScene("loseRoom");
+        //}
+        //else
+        //{
+        //    Time.timeScale = 1f;
+        //    AudioListener.pause = false;
+        //    SceneManager.LoadScene("loseRoom");
+        //}
     }
 
     // ===== API שימושי אם תרצה לשלוט ידנית =====

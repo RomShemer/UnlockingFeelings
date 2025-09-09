@@ -41,7 +41,6 @@ public class RoomExit : MonoBehaviour
             if (RunStats.Instance != null)
             {
                 RunStats.Instance.CompleteCurrent("exit");
-                Debug.Log("[RoomExit] Marked current room as completed in RunStats.");
             }
             else
             {
