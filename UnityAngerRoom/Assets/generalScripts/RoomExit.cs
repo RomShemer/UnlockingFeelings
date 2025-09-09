@@ -6,6 +6,9 @@ public class RoomExit : MonoBehaviour
     [Tooltip("תג של השחקן (למשל Player). ריק = כל כניסה תפעיל.")]
     public string playerTag = "Default";
 
+    [Tooltip("מזהה החדר עבור התפריט (למשל BookRoom, JoyRoom, AngerRoom...)")]
+    public string roomId = "AngerRoom";
+
     bool fired = false;
     public RoomManager roomManager;
 
@@ -18,6 +21,7 @@ public class RoomExit : MonoBehaviour
                 Debug.LogWarning("[RoomExit] No RoomManager instance found in scene.");
         }
     }
+
     private void Reset()
     {
         var col = GetComponent<Collider>();
@@ -26,21 +30,9 @@ public class RoomExit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (roomManager !=null && roomManager.IsMissionCompleted())
+        if (roomManager != null && roomManager.IsMissionCompleted())
         {
             Debug.Log($"[RoomExit] Trigger enter by {other.name} (tag={other.tag})");
-
-            //if (fired)
-            //{
-            //    Debug.Log("[RoomExit] Already fired once, ignoring.");
-            //    return;
-            //}
-
-            //if (!string.IsNullOrEmpty(playerTag) && !other.CompareTag(playerTag))
-            //{
-            //    Debug.Log($"[RoomExit] Ignored because tag mismatch (expected={playerTag}).");
-            //    return;
-            //}
 
             fired = true;
             Debug.Log("[RoomExit] Trigger accepted, processing exit...");
@@ -58,14 +50,23 @@ public class RoomExit : MonoBehaviour
 
             if (RoomRunManager.Instance != null)
             {
-                Debug.Log("[RoomExit] Calling RoomRunManager.LoadNextRoom()");
+                Debug.Log("[RoomExit] Calling RoomRunManager.LoadMenu()");
+
+                // --- חדש: סימון החדר כהושלם עבור התפריט ---
+                if (RoomProgressManager.Instance != null && !string.IsNullOrEmpty(roomId))
+                {
+                    RoomProgressManager.Instance.MarkRoomCompleted(roomId);
+                    Debug.Log($"[RoomExit] Marked room '{roomId}' as completed.");
+                }
+
                 RoomRunManager.Instance.LoadMenu(); // המנהל כבר עושה FadeToScene
             }
             else
             {
                 Debug.LogError("[RoomExit] No RoomRunManager in scene.");
             }
-        } else if(roomManager == null)
+        }
+        else if (roomManager == null)
         {
             Debug.Log($"[RoomExit] Trigger enter by {other.name} (tag={other.tag})");
 
@@ -97,7 +98,15 @@ public class RoomExit : MonoBehaviour
 
             if (RoomRunManager.Instance != null)
             {
-                Debug.Log("[RoomExit] Calling RoomRunManager.LoadNextRoom()");
+                Debug.Log("[RoomExit] Calling RoomRunManager.LoadMenu()");
+
+                // --- חדש: סימון החדר כהושלם עבור התפריט ---
+                if (RoomProgressManager.Instance != null && !string.IsNullOrEmpty(roomId))
+                {
+                    RoomProgressManager.Instance.MarkRoomCompleted(roomId);
+                    Debug.Log($"[RoomExit] Marked room '{roomId}' as completed.");
+                }
+
                 RoomRunManager.Instance.LoadMenu(); // המנהל כבר עושה FadeToScene
             }
             else

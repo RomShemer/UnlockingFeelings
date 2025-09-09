@@ -10209,7 +10209,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254891069}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc284b990e8354b37b98fe5d90df0bcb, type: 3}
   m_Name: 
@@ -10218,7 +10218,8 @@ MonoBehaviour:
   pauseAudio: 1
   buttonDebounceSeconds: 0.25
   menuSceneName: menuScene
-  instructionsOverlay: {fileID: 2137266089}
+  button: 1
+  logDebug: 0
 --- !u!114 &254891073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10231,9 +10232,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d2672ea404248e4b9360a750378fba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  excludeNames: []
-  excludeCurrentScene: 1
-  avoidRepeatLastPick: 1
+  persistAcrossScenes: 1
+  preventReenterVisited: 1
+  alignFixedOrderOnLoad: 1
+  useFixedOrder: 0
+  loopFixedOrder: 1
+  persistFixedProgress: 1
+  startFixedIndex: 0
+  fixedOrder: []
 --- !u!4 &254891075
 Transform:
   m_ObjectHideFlags: 0
@@ -10256,7 +10262,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254891069}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a294ba5f97ae2492bb3ae03d7587fba6, type: 3}
   m_Name: 
@@ -10303,6 +10309,7 @@ MonoBehaviour:
   snapToAnchorOnSelect: 1
   buttonsCanvasRoot: {fileID: 1351827853}
   hideCanvasOnSelect: 1
+  verbose: 1
 --- !u!114 &254891077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10310,14 +10317,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254891069}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a9140fd3caf4a1bb0b6c289b558e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   espUrl: http://172.20.10.4/sensor
   updateInterval: 0.05
-  flashlight: {fileID: 0}
+  flashlight: {fileID: 5847828934166758396}
   handReference: {fileID: 537065694}
   flashlightGripPoint: {fileID: 341918425}
   floorAnchor: {fileID: 324148958}
@@ -10947,7 +10954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e884d9f5e44fd42e48edd475c6ab4f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSeconds: 10
+  startSeconds: 180
   autoStart: 0
   sceneToLoadOnEnd: loseRoom
   tmpText: {fileID: 1288811732}
@@ -11356,9 +11363,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 254891072}
-        m_TargetAssemblyTypeName: VRPauseManager, Assembly-CSharp
-        m_MethodName: QuitToMenu
+      - m_Target: {fileID: 772626307}
+        m_TargetAssemblyTypeName: PauseMenuButtons, Assembly-CSharp
+        m_MethodName: OnQuit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16835,7 +16842,7 @@ Transform:
   m_GameObject: {fileID: 622074255}
   serializedVersion: 2
   m_LocalRotation: {x: 0.70712703, y: 0.0029502811, z: 0.0000055166897, w: 0.7070804}
-  m_LocalPosition: {x: 0.17, y: 1.13, z: 0.73}
+  m_LocalPosition: {x: -0.04, y: 1.13, z: -0.16}
   m_LocalScale: {x: 0.14499998, y: 0.24999996, z: 0.24999997}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16928,6 +16935,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTag: MainCamera
+  roomId: sadness
+  roomManager: {fileID: 0}
 --- !u!1 &625339139
 GameObject:
   m_ObjectHideFlags: 0
@@ -17303,9 +17312,6 @@ MonoBehaviour:
   openBookWrong: {fileID: 1765328712}
   sadnessTag: SadnessBook
   wrongDisplaySeconds: 5
-  sensor: {fileID: 254891077}
-  buttonsCanvasRoot: {fileID: 1351827853}
-  showButtonsOnWrongReturn: 1
 --- !u!1 &636304285
 GameObject:
   m_ObjectHideFlags: 0
@@ -20227,6 +20233,8 @@ GameObject:
   - component: {fileID: 772626305}
   - component: {fileID: 772626304}
   - component: {fileID: 772626303}
+  - component: {fileID: 772626308}
+  - component: {fileID: 772626307}
   m_Layer: 6
   m_Name: pause
   m_TagString: Untagged
@@ -20320,6 +20328,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.21}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &772626307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772626302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ba044e426064dde86d09a58c57ddd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &772626308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772626302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e74fe1201c1e43d1a075736258e59b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &773591593
 GameObject:
   m_ObjectHideFlags: 0
@@ -30121,7 +30153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1351827854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30206,9 +30238,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 254891072}
-        m_TargetAssemblyTypeName: VRPauseManager, Assembly-CSharp
-        m_MethodName: Resume
+      - m_Target: {fileID: 772626307}
+        m_TargetAssemblyTypeName: PauseMenuButtons, Assembly-CSharp
+        m_MethodName: OnResume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -45158,8 +45190,10 @@ MonoBehaviour:
     series of puzzles will appear. You\u2019ll need to enter their answers to produce
     musical notes. With each note, the progress bar will move forward slightly.\n\nOnce
     the bar is full, your final challenge is to find the key that will unlock the
-    next room.\nYou have 3 minutes.\n\nPress B to pause the game.\nPress Y to show
-    these instructions again.\nPress Y to continue."
+    next room.\nYou have 3 minutes.\n\nTo press buttons, use the back trigger button
+    on the controller.\nTo play sounds on the piano, place the controller on the
+    correct ke.\n\nPress B to pause the game.\nPress Y to show these instructions
+    again.\nPress Y to continue."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -45186,8 +45220,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 3.46
+  m_fontSizeBase: 3.46
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -50337,6 +50371,7 @@ GameObject:
   - component: {fileID: 6009780487225377932}
   - component: {fileID: 6009780487225377935}
   - component: {fileID: 6009780487225377936}
+  - component: {fileID: 6009780487225377937}
   m_Layer: 3
   m_Name: SadnessClosedBook
   m_TagString: SadnessBook
@@ -51380,6 +51415,28 @@ MonoBehaviour:
   bookPlace: {fileID: 324148958}
   grabComponentsToDisable: []
   noGrabLayerName: NoGrab
+--- !u!114 &6009780487225377937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5147397139176520173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a083b8cf59794de1b83944fc3a02a56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  espUrl: http://172.20.10.4/sensor
+  updateInterval: 0.05
+  flashlight: {fileID: 5847828934166758396}
+  handReference: {fileID: 537065694}
+  flashlightGripPoint: {fileID: 341918425}
+  floorAnchor: {fileID: 324148958}
+  rotationSensitivity: 0.2
+  minY: 0.5
+  attachGyroDegPerSec: 40
+  attachAccelDeltaG: 0.25
 --- !u!1 &6013317808738704680
 GameObject:
   m_ObjectHideFlags: 0
