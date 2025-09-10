@@ -9,7 +9,7 @@ namespace fearRoom
 {
     public class EspImuReader : MonoBehaviour
     {
-        public string espUrl = "http://10.100.102.51/sensor";
+        public string espUrl = "http://172.20.10.2/sensor";
         public Transform flashlight;   // האובייקט של הפנס בחדר
         public float updateInterval = 0.2f; // בקשה כל 50ms (20Hz)
         private Coroutine fetchCoroutine;

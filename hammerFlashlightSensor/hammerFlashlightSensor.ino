@@ -4,8 +4,8 @@
 
 // ==== WiFi ====
 
-const char* ssid = "?";
-const char* pass = "?";
+const char* ssid = "Rotem";
+const char* pass = "12345678";
 
 // ==== I2C / MPU-6500 ====
 #define MPU_ADDR           0x68

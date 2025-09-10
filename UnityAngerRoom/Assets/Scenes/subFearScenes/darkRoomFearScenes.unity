@@ -2350,7 +2350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34aea7fc4949be34ba71f93d67a68663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  espUrl: http://10.100.102.51/sensor
+  espUrl: http://172.20.10.2/sensor
   flashlight: {fileID: 88572623}
   updateInterval: 0.05
   handReference: {fileID: 1259734509}

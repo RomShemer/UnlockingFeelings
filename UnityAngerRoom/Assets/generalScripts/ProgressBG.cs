@@ -44,7 +44,7 @@ public class ProgressBG : MonoBehaviour
     [Tooltip("האובייקט של קנבס השעון להעלמה (אם ריק – ננסה לקחת מ-countdown.timerUI)")]
     [SerializeField] GameObject timerCanvasToHide;
 
-    int total = 1;
+    int total = 6;
     int current = 0;
     bool completed;
 

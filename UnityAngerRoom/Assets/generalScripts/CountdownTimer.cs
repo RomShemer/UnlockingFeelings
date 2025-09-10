@@ -261,14 +261,14 @@ public class CountdownTimer : MonoBehaviour
         Destroy(go);
     }
 
-    IEnumerator LoadAfterDelay()
-    {
-        yield return new WaitForSecondsRealtime(gameOverDelay);
+    //IEnumerator LoadAfterDelay()
+    //{
+        //yield return new WaitForSecondsRealtime(gameOverDelay);
 
-        if (RunStats.Instance != null && RunStats.Instance.IsRunFinished())
-            RunStats.Instance.GoToSummaryScene();
-        else
-            RoomRunManager.Instance?.LoadMenu();
+        //if (RunStats.Instance != null && RunStats.Instance.IsRunFinished())
+            //RunStats.Instance.GoToSummaryScene();
+        //else
+            //RoomRunManager.Instance?.LoadMenu();
 
         //if (ScreenFader.Instance != null)
         //{
@@ -282,8 +282,37 @@ public class CountdownTimer : MonoBehaviour
         //    AudioListener.pause = false;
         //    SceneManager.LoadScene("loseRoom");
         //}
-    }
+    //}
+IEnumerator LoadAfterDelay()
+{
+    yield return new WaitForSecondsRealtime(gameOverDelay);
 
+    Time.timeScale = 1f;
+    AudioListener.pause = false;
+
+    if (RunStats.Instance != null)
+        RunStats.Instance.GoToSummaryScene();  // יבחר loseRoom לפי IsVictory()
+    else
+        SceneManager.LoadScene("loseRoom");    // גיבוי
+
+    //if (RunStats.Instance != null && RunStats.Instance.IsRunFinished())
+    //    RunStats.Instance.GoToSummaryScene();
+    //else
+    //    RoomRunManager.Instance?.LoadMenu();
+
+    //if (ScreenFader.Instance != null)
+    //{
+
+
+    //    ////ScreenFader.Instance.FadeToScene("loseRoom");
+    //}
+    //else
+    //{
+    //    Time.timeScale = 1f;
+    //    AudioListener.pause = false;
+    //    SceneManager.LoadScene("loseRoom");
+    //}
+}
     // ===== API שימושי אם תרצה לשלוט ידנית =====
     public void StartTimer()
     {
