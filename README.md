@@ -85,3 +85,64 @@ Typical pin examples:
     * Build Settings: File → Build Settings…
     * Scenes In Build: inside the Build Settings window
     * Switch Platform: select Android then Switch Platform
+
+<div align="center">
+
+<h2>Unlocking Feelings — Demo</h2>
+
+<!-- ===== Intro Section ===== -->
+<h3>&nbsp;Intro &amp; Main Menu</h3>
+<div style="display:inline-block; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:40px;">
+  <video src="https://github.com/user-attachments/assets/b257e206-ebf2-4c10-9533-836f327d5c6b"
+ 
+  controls 
+  style="max-width: 100%; width: 900px; border-radius:10px;">
+  </video>
+</div>
+
+<!-- ===== Emotion Rooms ===== -->
+<table align="center" style="border:none; border-collapse:collapse;">
+  <tr style="background-color: transparent;">
+    <td align="center" style="border:none; padding:10px; background-color: transparent;">
+      <img alt="Anger Room 😡" 
+           src="https://img.shields.io/badge/Anger%20Room%20😡-e63946?style=for-the-badge&labelColor=1b1f23" />
+      <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:8px;">
+        <video src="https://github.com/user-attachments/assets/023ce8f7-f51c-4538-89c9-3c2d940c226d"
+        controls 
+        style="width:100%; max-width:450px; border-radius:10px;"></video>
+      </div>
+    </td>
+    <td align="center" style="border:none; padding:10px; background-color: transparent;">
+      <img alt="Joy Room 🤗" 
+           src="https://img.shields.io/badge/Joy%20Room%20🤗-f4a261?style=for-the-badge&labelColor=1b1f23" />
+      <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:8px;">
+        <video src="https://github.com/user-attachments/assets/eabddd3a-40e1-4672-abef-2c214c89374a"
+        controls 
+        style="width:100%; max-width:450px; border-radius:10px;"></video>
+      </div>
+    </td>
+  </tr>
+
+  <tr style="background-color: transparent;">
+    <td align="center" style="border:none; padding:10px; background-color: transparent;">
+      <img alt="Sadness Room 😢" 
+           src="https://img.shields.io/badge/Sadness%20Room%20😢-1d3557?style=for-the-badge&labelColor=1b1f23" />
+      <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:8px;">
+        <video src="https://github.com/user-attachments/assets/526f9e91-36f9-46fe-ab09-434c2db4526f"
+        controls 
+        style="width:100%; max-width:450px; border-radius:10px;"></video>
+      </div>
+    </td>
+    <td align="center" style="border:none; padding:10px; background-color: transparent;">
+      <img alt="Fear Room 😰" 
+           src="https://img.shields.io/badge/Fear%20Room%20😰-6a0dad?style=for-the-badge&labelColor=1b1f23" />
+      <div style="border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:8px;">
+        <video src="https://github.com/user-attachments/assets/b48b2531-b765-47c5-bf2b-0fef7b2318e8"
+        controls 
+        style="width:100%; max-width:450px; border-radius:10px;"></video>
+      </div>
+    </td>
+  </tr>
+</table>
+
+</div>
