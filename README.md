@@ -86,6 +86,7 @@ Typical pin examples:
     * Scenes In Build: inside the Build Settings window
     * Switch Platform: select Android then Switch Platform
 
+
 <div align="center">
 
 <h2>Unlocking Feelings — Demo</h2>
@@ -94,7 +95,6 @@ Typical pin examples:
 <h3>&nbsp;Intro &amp; Main Menu</h3>
 <div style="display:inline-block; border:1px solid #ddd; border-radius:10px; padding:10px; margin-bottom:40px;">
   <video src="https://github.com/user-attachments/assets/b257e206-ebf2-4c10-9533-836f327d5c6b"
- 
   controls 
   style="max-width: 100%; width: 900px; border-radius:10px;">
   </video>
